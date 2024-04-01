@@ -121,7 +121,7 @@ public class PlayerController : MonoBehaviour
             swapReleased = true;
         }
 
-        if (swapReleased && interactingSlot != null && Input.GetButton("Swap"))
+        if (isGrounded && swapReleased && interactingSlot != null && Input.GetButton("Swap"))
         {
             HeldWord = interactingSlot.Swap(HeldWord);
 						swapReleased = false;
