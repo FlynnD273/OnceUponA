@@ -15,6 +15,9 @@ public class PlayerController : MonoBehaviour
     public float Grounding;
 
     public PlayerState State;
+    public string HeldWord;
+    public WordSlotController interactingSlot;
+    private bool swapReleased;
 
     private Stopwatch coyote;
     private Stopwatch startJump;
@@ -37,13 +40,14 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        HeldWord = null;
         rb = GetComponent<Rigidbody2D>();
         coll = GetComponent<Collider2D>();
         gravScale = rb.gravityScale;
-        coyote = new Stopwatch();
-        startJump = new Stopwatch();
-        varJumpTimeSpan = new TimeSpan(0, 0, 0, 0, (int)(1000 * VarJumpTime));
-        coyoteTimeSpan = new TimeSpan(0, 0, 0, 0, (int)(1000 * CoyoteTime));
+        coyote = new();
+        startJump = new();
+        varJumpTimeSpan = new(0, 0, 0, 0, (int)(1000 * VarJumpTime));
+        coyoteTimeSpan = new(0, 0, 0, 0, (int)(1000 * CoyoteTime));
     }
 
     // Update is called once per frame
@@ -111,5 +115,37 @@ public class PlayerController : MonoBehaviour
         rb.velocity = new Vector2(x, y);
         px = x;
         wasGrounded = isGrounded;
+
+        if (!Input.GetButton("Swap"))
+        {
+            swapReleased = true;
+        }
+
+        if (swapReleased && interactingSlot != null && Input.GetButton("Swap"))
+        {
+            HeldWord = interactingSlot.Swap(HeldWord);
+						swapReleased = false;
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        var slot = collision.gameObject.GetComponent<WordSlotController>();
+        if (slot != null)
+        {
+            if (slot.CurrentWord == null ^ HeldWord == null)
+            {
+                interactingSlot = slot;
+            }
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D collision)
+    {
+        var slot = collision.gameObject.GetComponent<WordSlotController>();
+        if (slot != null)
+        {
+            interactingSlot = null;
+        }
     }
 }
