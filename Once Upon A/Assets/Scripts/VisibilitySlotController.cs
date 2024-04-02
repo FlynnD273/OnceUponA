@@ -6,25 +6,28 @@ public class VisibilitySlotController : WordSlotController
 {
     public GameObject Target;
     public string triggerWord;
+    public bool IsVisibleDefault;
+
+    internal override void Init()
+    {
+        Triggered(null);
+    }
 
     internal override void Triggered(Word oldWord)
     {
+        bool cond;
         if (string.IsNullOrWhiteSpace(triggerWord))
         {
-					if (CurrentWord != null) {
-                Target.SetActive(true);
-					}
+            cond = !string.IsNullOrWhiteSpace(CurrentWord?.Text);
         }
         else
         {
-            if (CurrentWord.Text == triggerWord)
-            {
-                Target.SetActive(false);
-            }
+            cond = CurrentWord?.Text == triggerWord;
         }
+        Target.SetActive(cond ^ IsVisibleDefault);
     }
     internal override void UnTriggered()
     {
-        Target.SetActive(!string.IsNullOrWhiteSpace(triggerWord));
+        Target.SetActive(IsVisibleDefault);
     }
 }

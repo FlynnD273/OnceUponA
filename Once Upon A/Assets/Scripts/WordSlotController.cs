@@ -54,7 +54,9 @@ public class WordSlotController : MonoBehaviour
         {
             CurrentWord = new(StartingWordType, text.text);
         }
+				Init();
     }
+    internal virtual void Init() { }
 
     public Word Swap(Word newWord)
     {

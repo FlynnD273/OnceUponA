@@ -594,6 +594,7 @@ MonoBehaviour:
   StartingWordType: 0
   Target: {fileID: 506885487}
   triggerWord: NO ONE
+  IsVisibleDefault: 1
 --- !u!1 &291564945
 GameObject:
   m_ObjectHideFlags: 0
@@ -983,7 +984,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StartingWordType: 0
   Target: {fileID: 11489813}
-  triggerWord: a
+  triggerWord: 
+  IsVisibleDefault: 0
 --- !u!61 &792620718
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1505,7 +1507,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 1588.5007, y: 0}
+  m_Offset: {x: 1591.4357, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -1516,7 +1518,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 3180.0376, y: 43.08}
+  m_Size: {x: 3185.9075, y: 43.08}
   m_EdgeRadius: 0
 --- !u!102 &879349792
 TextMesh:
@@ -1527,7 +1529,7 @@ TextMesh:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 879349790}
   m_Text: "THEY QUICKLY GREW TO BECOME THE BEST OF FRIENDS.                    ,
-    IT SEEMS, COULD SEPARATE THEM FROM EACH OTHER.                     WAS GOOD\r"
+    IT SEEMS, COULD SEPARATE THEM FROM EACH OTHER.                     WAS GOOD\r."
   m_OffsetZ: 0
   m_CharacterSize: 1
   m_LineSpacing: 1
@@ -1761,7 +1763,7 @@ GameObject:
   - component: {fileID: 1031032331}
   - component: {fileID: 1031032330}
   - component: {fileID: 1031032329}
-  - component: {fileID: 1031032328}
+  - component: {fileID: 1031032333}
   m_Layer: 0
   m_Name: Once upon a princess slot
   m_TagString: Untagged
@@ -1769,19 +1771,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1031032328
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1031032327}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9cd9505af2cd75347b501932f9d7f343, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  StartingWordType: 0
 --- !u!61 &1031032329
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1910,6 +1899,22 @@ RectTransform:
   m_AnchoredPosition: {x: 68.12, y: 4.89}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1031032333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1031032327}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49d94e1304f22fa458eabc19db1bb446, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StartingWordType: 0
+  Target: {fileID: 879349790}
+  triggerWord: A PRINCE
+  IsVisibleDefault: 0
 --- !u!1 &1083784743
 GameObject:
   m_ObjectHideFlags: 0
@@ -2539,9 +2544,9 @@ SceneRoots:
   - {fileID: 1083784747}
   - {fileID: 1031032332}
   - {fileID: 288989881}
-  - {fileID: 506885490}
   - {fileID: 792620721}
   - {fileID: 879349794}
+  - {fileID: 506885490}
   - {fileID: 11489817}
   - {fileID: 1402548995}
   - {fileID: 1373199803}
