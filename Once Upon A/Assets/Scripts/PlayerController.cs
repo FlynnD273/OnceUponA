@@ -3,21 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
+using static Utils.Constants;
 using Debug = UnityEngine.Debug;
 
 public class PlayerController : MonoBehaviour
 {
     public float XSpeed;
     public float JumpHeight;
+    public float BouncyJumpHeight;
     public float VarJumpTime;
     public float VarJumpGravScale;
     public float CoyoteTime;
     public float Grounding;
+    public HeldWordController HeldWordControl;
 
     public PlayerState State;
-    public string HeldWord;
     public WordSlotController interactingSlot;
-    private bool swapReleased;
 
     private Stopwatch coyote;
     private Stopwatch startJump;
@@ -28,6 +29,7 @@ public class PlayerController : MonoBehaviour
     private bool wasGrounded;
     private bool jumping;
     private bool jumpReleased;
+    private bool isBouncy;
 
     private TimeSpan varJumpTimeSpan;
     private TimeSpan coyoteTimeSpan;
@@ -36,11 +38,12 @@ public class PlayerController : MonoBehaviour
     private float gravScale;
 
     public enum PlayerState { Idle, Walking, Jumping, Falling }
+    private Vector2 spawnPoint;
 
     // Start is called before the first frame update
     void Start()
     {
-        HeldWord = null;
+        spawnPoint = transform.position;
         rb = GetComponent<Rigidbody2D>();
         coll = GetComponent<Collider2D>();
         gravScale = rb.gravityScale;
@@ -75,6 +78,25 @@ public class PlayerController : MonoBehaviour
                 State = PlayerState.Jumping;
             }
         }
+
+        if (isGrounded && interactingSlot != null && Input.GetButtonDown("Swap"))
+        {
+            HeldWordControl.HeldWord = interactingSlot.Swap(HeldWordControl.HeldWord);
+            if ((interactingSlot.CurrentWord?.Type ?? WordType.Normal) == WordType.Bouncy)
+            {
+                isBouncy = true;
+            }
+            else
+            {
+                isBouncy = false;
+            }
+        }
+
+        if (Input.GetButtonDown("Reset"))
+        {
+            transform.position = spawnPoint;
+            rb.velocity = new Vector2(0, 0);
+        }
     }
 
     void FixedUpdate()
@@ -106,8 +128,16 @@ public class PlayerController : MonoBehaviour
 
         if ((isGrounded || (coyote.IsRunning && coyote.Elapsed < coyoteTimeSpan)) && jumpReleased && Input.GetButton("Jump"))
         {
-            y = JumpHeight;
+            if (isBouncy)
+            {
+                y = BouncyJumpHeight;
+            }
+            else
+            {
+                y = JumpHeight;
+            }
             jumpReleased = false;
+            isGrounded = false;
             startJump.Restart();
             rb.gravityScale = VarJumpGravScale;
         }
@@ -115,17 +145,6 @@ public class PlayerController : MonoBehaviour
         rb.velocity = new Vector2(x, y);
         px = x;
         wasGrounded = isGrounded;
-
-        if (!Input.GetButton("Swap"))
-        {
-            swapReleased = true;
-        }
-
-        if (isGrounded && swapReleased && interactingSlot != null && Input.GetButton("Swap"))
-        {
-            HeldWord = interactingSlot.Swap(HeldWord);
-						swapReleased = false;
-        }
     }
 
     void OnTriggerEnter2D(Collider2D collision)
@@ -133,9 +152,14 @@ public class PlayerController : MonoBehaviour
         var slot = collision.gameObject.GetComponent<WordSlotController>();
         if (slot != null)
         {
-            if (slot.CurrentWord == null ^ HeldWord == null)
+            interactingSlot = slot;
+            if ((slot.CurrentWord?.Type ?? WordType.Normal) == WordType.Bouncy)
             {
-                interactingSlot = slot;
+                isBouncy = true;
+            }
+            else
+            {
+                isBouncy = false;
             }
         }
     }
@@ -146,6 +170,7 @@ public class PlayerController : MonoBehaviour
         if (slot != null)
         {
             interactingSlot = null;
+            isBouncy = false;
         }
     }
 }

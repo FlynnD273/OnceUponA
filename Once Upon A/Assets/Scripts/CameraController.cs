@@ -13,14 +13,14 @@ public class CameraController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        transform.position = Target.transform.position;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
         Vector2 deltaPos = Target.transform.position - transform.position;
-				float x = transform.position.x, y = transform.position.y;
+        float x = transform.position.x, y = transform.position.y;
 
         if (deltaPos.x > HoriThreshold)
         {
@@ -40,7 +40,7 @@ public class CameraController : MonoBehaviour
             y = Target.transform.position.y + VertThreshold;
         }
 
-				Vector2 newPos = Vector2.Lerp(transform.position, new Vector2(x, y), Math.Min(1, Speed * Time.fixedDeltaTime));
-				transform.position = new Vector3(newPos.x, newPos.y, -10);
+        Vector2 newPos = Vector2.Lerp(transform.position, new Vector2(x, y), Math.Min(1, Speed * Time.fixedDeltaTime));
+        transform.position = new Vector3(newPos.x, newPos.y, -10);
     }
 }
