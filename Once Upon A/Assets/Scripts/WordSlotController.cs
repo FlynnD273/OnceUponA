@@ -72,7 +72,7 @@ public class WordSlotController : MonoBehaviour
         if (!didInit)
         {
             Init();
-            didInit = false;
+            didInit = true;
         }
     }
     public virtual void Init() { }
