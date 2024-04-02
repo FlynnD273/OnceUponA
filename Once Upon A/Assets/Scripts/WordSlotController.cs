@@ -22,8 +22,8 @@ public class WordSlotController : MonoBehaviour
 
             if (value == null)
             {
-                text.text = new string('_', (int)(trigger.bounds.size.x / 0.05 / 25));
-                text.color = WordToColor[WordType.Normal];
+                text.text = ""; //new string('_', (int)(trigger.bounds.size.x / 0.05 / 25));
+                /* text.color = WordToColor[WordType.Normal]; */
             }
             else
             {
@@ -39,6 +39,7 @@ public class WordSlotController : MonoBehaviour
     private TextMesh text;
 
     private int startLength;
+    private bool didInit;
 
     // Start is called before the first frame update
     void Start()
@@ -54,9 +55,27 @@ public class WordSlotController : MonoBehaviour
         {
             CurrentWord = new(StartingWordType, text.text);
         }
-				Init();
+
+        var line = gameObject.AddComponent<LineRenderer>();
+        line.material = new Material(Shader.Find("Legacy Shaders/Particles/Alpha Blended Premultiply"));
+        line.startColor = WordToColor[WordType.White];
+        line.startWidth = 0.15f;
+        line.endColor = line.startColor;
+        line.endWidth = line.startWidth;
+        line.numCapVertices = 5;
+        line.positionCount = 2;
+        line.SetPositions(new Vector3[] { new Vector3(transform.position.x, transform.position.y - 1.25f), new Vector3(transform.position.x + trigger.bounds.size.x, transform.position.y - 1.25f) });
     }
-    internal virtual void Init() { }
+
+    public void Update()
+    {
+        if (!didInit)
+        {
+            Init();
+            didInit = false;
+        }
+    }
+    public virtual void Init() { }
 
     public Word Swap(Word newWord)
     {

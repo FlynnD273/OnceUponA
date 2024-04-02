@@ -4,13 +4,20 @@ using UnityEngine;
 
 public class VisibilitySlotController : WordSlotController
 {
-    public GameObject Target;
     public string triggerWord;
-    public bool IsVisibleDefault;
+    public GameObject[] Visible;
+    public GameObject[] Invisible;
 
-    internal override void Init()
+    public override void Init()
     {
-        Triggered(null);
+        foreach (var go in Visible)
+        {
+            go.SetActive(true);
+        }
+        foreach (var go in Invisible)
+        {
+            go.SetActive(false);
+        }
     }
 
     internal override void Triggered(Word oldWord)
@@ -24,10 +31,29 @@ public class VisibilitySlotController : WordSlotController
         {
             cond = CurrentWord?.Text == triggerWord;
         }
-        Target.SetActive(cond ^ IsVisibleDefault);
+
+        if (cond)
+        {
+            foreach (var go in Visible)
+            {
+                go.SetActive(false);
+            }
+            foreach (var go in Invisible)
+            {
+                go.SetActive(true);
+            }
+        }
     }
+
     internal override void UnTriggered()
     {
-        Target.SetActive(IsVisibleDefault);
+        foreach (var go in Visible)
+        {
+            go.SetActive(true);
+        }
+        foreach (var go in Invisible)
+        {
+            go.SetActive(false);
+        }
     }
 }

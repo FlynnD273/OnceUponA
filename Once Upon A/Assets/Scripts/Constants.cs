@@ -12,6 +12,7 @@ namespace Utils
             Default = 0,
             TransparentFX = 1,
             IgnoreRaycast = 2,
+            Checkpoint = 3,
             Water = 4,
             UI = 5,
             Player = 6,
@@ -48,6 +49,17 @@ namespace Utils
                 bytes[i / 2] = Convert.ToByte(b, 16);
             }
             return new Color(bytes[0] / 255f, bytes[1] / 255f, bytes[2] / 255f);
+        }
+
+        public static void Invoke(this MonoBehaviour mb, Action f, float delay)
+        {
+            mb.StartCoroutine(InvokeRoutine(f, delay));
+        }
+
+        private static IEnumerator InvokeRoutine(System.Action f, float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            f();
         }
     }
 }
