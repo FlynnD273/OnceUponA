@@ -90,7 +90,7 @@ public class PlayerController : MonoBehaviour
 
         if (Math.Abs(rb.velocity.x) >= 0.1f)
         {
-            transform.localScale = new Vector2(Mathf.Abs(transform.localScale.x) * (rb.velocity.x > 0 ? 1 : -1), transform.localScale.y);
+            transform.localScale = new Vector2(Mathf.Abs(transform.localScale.x) * Mathf.Sign(rb.velocity.x), transform.localScale.y);
         }
 
         anim.SetInteger("PlayerState", (int)State);

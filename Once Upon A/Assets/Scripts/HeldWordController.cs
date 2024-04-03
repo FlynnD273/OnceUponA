@@ -26,9 +26,10 @@ public class HeldWordController : MonoBehaviour
             }
             else
             {
-
                 heldWordMesh.text = value.Text;
                 heldWordMesh.color = WordToColor[value.Type];
+								var xOffset = 1f * Mathf.Sign(Target.transform.localScale.x);
+								transform.position = Target.transform.position + new Vector3(xOffset, -1);
             }
         }
     }

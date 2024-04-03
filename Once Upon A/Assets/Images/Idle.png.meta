@@ -110,7 +110,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Walk_0
+      name: Idle_0
       rect:
         serializedVersion: 2
         x: 0
@@ -118,161 +118,77 @@ TextureImporter:
         width: 83
         height: 149
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ad979e4104e1e2f4a8d5d3113244a77e
-      internalID: -1502074621
+      spriteID: 78dc9a17f7cd334438525400db82ae55
+      internalID: 956886614
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walk_1
+      name: Idle_1
       rect:
         serializedVersion: 2
-        x: 0
+        x: 83
         y: 0
         width: 83
         height: 149
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a91e3b2efc0e1334ba88a627faf83cb6
-      internalID: 129452421
+      spriteID: d239019448d6ba947b4fcf31219993c1
+      internalID: -27516588
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walk_2
+      name: Idle_2
       rect:
         serializedVersion: 2
-        x: 0
+        x: 166
         y: 0
         width: 83
         height: 149
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 34ead497033f4d0488b23ec8445f72f6
-      internalID: 249224515
+      spriteID: cbcfe4050db08654fab2c473dff2ea39
+      internalID: 216979034
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walk_3
+      name: Idle_3
       rect:
         serializedVersion: 2
-        x: 0
+        x: 249
         y: 0
         width: 83
         height: 149
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 71abf978b4b5f77498dbf4fe3fc74b68
-      internalID: -227829338
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Walk_4
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 83
-        height: 149
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 7e08799e773ef9749980fd2474332c95
-      internalID: 1058316870
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Walk_5
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 83
-        height: 149
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 138d5735467bbc94089e55e33667c7bb
-      internalID: -376569886
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Walk_6
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 83
-        height: 149
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 93886f3d91324ef4bb01e0f754f6eaf4
-      internalID: -1071184562
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Walk_7
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 83
-        height: 149
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: fc849e18380868048b16d171fcbda7d3
-      internalID: -707407081
+      spriteID: f2a4f8c2ceacd74408f1944b6d7ccc5f
+      internalID: -436694607
       vertices: []
       indices: 
       edges: []
@@ -288,14 +204,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Walk_0: -1502074621
-      Walk_1: 129452421
-      Walk_2: 249224515
-      Walk_3: -227829338
-      Walk_4: 1058316870
-      Walk_5: -376569886
-      Walk_6: -1071184562
-      Walk_7: -707407081
+      Idle_0: 956886614
+      Idle_1: -27516588
+      Idle_2: 216979034
+      Idle_3: -436694607
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
