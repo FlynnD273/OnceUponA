@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using UnityEngine;
 using static Utils.Constants;
 using Debug = UnityEngine.Debug;
@@ -19,7 +20,7 @@ public class PlayerController : MonoBehaviour
     public HeldWordController HeldWordControl;
 
     public PlayerState State;
-    public WordSlotController interactingSlot;
+    public List<WordSlotController> interactingSlots = new();
 
     private Stopwatch coyote;
     private Stopwatch startJump;
@@ -46,10 +47,11 @@ public class PlayerController : MonoBehaviour
 
     private Animator anim;
 
+    private bool didSave;
+
     // Start is called before the first frame update
     void Start()
     {
-        spawnPoint = transform.position;
         rb = GetComponent<Rigidbody2D>();
         coll = GetComponent<Collider2D>();
         gravScale = rb.gravityScale;
@@ -59,11 +61,33 @@ public class PlayerController : MonoBehaviour
         varJumpTimeSpan = new(0, 0, 0, 0, (int)(1000 * VarJumpTime));
         coyoteTimeSpan = new(0, 0, 0, 0, (int)(1000 * CoyoteTime));
         anim = GetComponent<Animator>();
+        GameManager.Manager.ResetOccurred += Reset;
+        GameManager.Manager.SaveStateOccurred += SaveState;
+    }
+
+    private void SaveState()
+    {
+        spawnPoint = transform.position;
+    }
+
+    private void Reset()
+    {
+        transform.position = spawnPoint;
+        rb.velocity = new Vector2(0, 0);
+        lockControls.Reset();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!didSave)
+        {
+            GameManager.Manager.SaveState();
+            didSave = true;
+        }
+				if (transform.position.y < -100) {
+					GameManager.Manager.Reset();
+				}
         if (isGrounded)
         {
             if (Math.Abs(rb.velocity.x) <= 0.1f)
@@ -104,10 +128,10 @@ public class PlayerController : MonoBehaviour
 
         if (!lockControls.IsRunning)
         {
-            if (isGrounded && interactingSlot != null && Input.GetButtonDown("Swap"))
+            if (isGrounded && GetCurrentSlot() != null && Input.GetButtonDown("Swap"))
             {
-                HeldWordControl.HeldWord = interactingSlot.Swap(HeldWordControl.HeldWord);
-                if ((interactingSlot.CurrentWord?.Type ?? WordType.Normal) == WordType.Bouncy)
+                HeldWordControl.HeldWord = GetCurrentSlot().Swap(HeldWordControl.HeldWord);
+                if ((GetCurrentSlot().CurrentWord?.Type ?? WordType.Normal) == WordType.Bouncy)
                 {
                     isBouncy = true;
                 }
@@ -144,6 +168,7 @@ public class PlayerController : MonoBehaviour
             x = rb.velocity.x * Friction;
         }
 
+        Physics2D.queriesHitTriggers = false;
         RaycastHit2D hit = Physics2D.BoxCast(new Vector2(transform.position.x + coll.offset.x - (x + px) / 80, transform.position.y + coll.offset.y), new Vector2(coll.bounds.size.x * 0.9f, 0.1f), 0, Vector2.down, Mathf.Infinity, 1);
         isGrounded = hit.collider != null && hit.distance < Grounding + coll.bounds.size.y / 2;
 
@@ -189,20 +214,25 @@ public class PlayerController : MonoBehaviour
         var slot = collision.gameObject.GetComponent<WordSlotController>();
         if (slot != null)
         {
-            interactingSlot = slot;
-            if ((slot.CurrentWord?.Type ?? WordType.Normal) == WordType.Bouncy)
-            {
-                isBouncy = true;
-            }
-            else
-            {
-                isBouncy = false;
-            }
+            interactingSlots.Add(slot);
+            UpdateBouncy();
         }
 
         if (collision.gameObject.layer == (int)Layers.Checkpoint)
         {
-            spawnPoint = transform.position;
+            GameManager.Manager.SaveState();
+        }
+    }
+
+    private void UpdateBouncy()
+    {
+        if (interactingSlots.Any(x => (x.CurrentWord?.Type ?? WordType.Normal) == WordType.Bouncy))
+        {
+            isBouncy = true;
+        }
+        else
+        {
+            isBouncy = false;
         }
     }
 
@@ -211,8 +241,8 @@ public class PlayerController : MonoBehaviour
         var slot = collision.gameObject.GetComponent<WordSlotController>();
         if (slot != null)
         {
-            interactingSlot = null;
-            isBouncy = false;
+            interactingSlots.Remove(slot);
+            UpdateBouncy();
         }
     }
 
@@ -221,5 +251,10 @@ public class PlayerController : MonoBehaviour
         lockDuration = new TimeSpan(0, 0, 0, 0, (int)(seconds * 1000));
         lockControls.Restart();
         rb.gravityScale = gravScale;
+    }
+
+    public WordSlotController GetCurrentSlot()
+    {
+        return interactingSlots.FirstOrDefault(x => x.IsSwappable);
     }
 }

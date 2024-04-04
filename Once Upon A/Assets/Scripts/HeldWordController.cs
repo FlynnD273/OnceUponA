@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,16 +29,30 @@ public class HeldWordController : MonoBehaviour
             {
                 heldWordMesh.text = value.Text;
                 heldWordMesh.color = WordToColor[value.Type];
-								var xOffset = 1f * Mathf.Sign(Target.transform.localScale.x);
-								transform.position = Target.transform.position + new Vector3(xOffset, -1);
+                var xOffset = 1f * Mathf.Sign(Target.transform.localScale.x);
+                transform.position = Target.transform.position + new Vector3(xOffset, -1);
             }
         }
     }
 
+    private Word savedWord;
+
     void Start()
     {
         heldWordMesh = GetComponent<TextMesh>();
-				transform.position = Target.transform.position;
+        transform.position = Target.transform.position;
+        GameManager.Manager.ResetOccurred += Reset;
+        GameManager.Manager.SaveStateOccurred += SaveState;
+    }
+
+    private void Reset()
+    {
+        HeldWord = savedWord;
+    }
+
+    private void SaveState()
+    {
+        savedWord = HeldWord;
     }
 
     void FixedUpdate()
