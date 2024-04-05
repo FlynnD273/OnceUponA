@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour
   private Stopwatch lockControls;
 
   public enum PlayerState { Idle, Walking, Jumping, Falling }
-  private Vector2 spawnPoint;
+  private Vector3 spawnPoint;
 
   private Animator anim;
 

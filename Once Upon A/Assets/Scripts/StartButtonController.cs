@@ -5,21 +5,21 @@ using UnityEngine.SceneManagement;
 
 public class StartButtonController : MonoBehaviour
 {
-  private TextMesh text;
+  private Renderer text;
   // Start is called before the first frame update
   void Start()
   {
-    text = GetComponent<TextMesh>();
+    text = GetComponent<Renderer>();
   }
 
   void OnMouseOver()
   {
-    text.color = new Color(1, 1, 1, 0.5f);
+    text.material.color = new Color(1, 1, 1, 0.5f);
   }
 
   void OnMouseExit()
   {
-    text.color = new Color(1, 1, 1);
+    text.material.color = new Color(1, 1, 1);
   }
 
   void OnMouseDown()

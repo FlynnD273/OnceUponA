@@ -41,6 +41,6 @@ public class CameraController : MonoBehaviour
         }
 
         Vector2 newPos = Vector2.Lerp(transform.position, new Vector2(x, y), Math.Min(1, Speed * Time.fixedDeltaTime));
-        transform.position = new Vector3(newPos.x, newPos.y, -10);
+        transform.position = new Vector3(newPos.x, newPos.y, -100);
     }
 }
