@@ -128,10 +128,10 @@ MonoBehaviour:
   VarJumpTime: 0.5
   VarJumpGravScale: 2
   CoyoteTime: 0.1
-  Grounding: 0.05
+  Grounding: 0.1
   HeldWordControl: {fileID: 0}
   State: 0
-  interactingSlot: {fileID: 0}
+  interactingSlots: []
 --- !u!61 &3435570851480852859
 BoxCollider2D:
   m_ObjectHideFlags: 0

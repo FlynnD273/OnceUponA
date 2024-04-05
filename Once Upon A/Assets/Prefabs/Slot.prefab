@@ -163,3 +163,4 @@ MonoBehaviour:
   StartingWordType: 0
   TriggerWord: 
   Invert: 0
+  IsSwappable: 1

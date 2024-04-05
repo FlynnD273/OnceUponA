@@ -5,38 +5,35 @@ using UnityEngine;
 
 public class TriggerLogic : MonoBehaviour
 {
-    private bool didInit;
+  private bool didInit;
 
-    public event Action StateChanged;
-    private bool state;
-    public bool State
+  public event Action StateChanged;
+  private bool state;
+  public bool State
+  {
+    get
     {
-        get
-        {
-            return state;
-        }
-        internal set
-        {
-            if (state != value)
-            {
-                state = value;
-                StateChanged?.Invoke();
-            }
-        }
+      return state;
     }
+    internal set
+    {
+      state = value;
+      StateChanged?.Invoke();
+    }
+  }
 
-    public void Start()
+  public void Update()
+  {
+    if (!didInit)
     {
-        if (!didInit)
-        {
-            Init();
-            didInit = true;
-        }
+      Init();
+      didInit = true;
     }
+  }
 
-    public virtual void Init()
-    {
-        State = true;
-        State = false;
-    }
+  public virtual void Init()
+  {
+    State = true;
+    State = false;
+  }
 }

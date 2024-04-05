@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 252408543182804233}
   - component: {fileID: 5208179989908669344}
   - component: {fileID: 6245029124709407783}
-  - component: {fileID: 5697924345892770433}
+  - component: {fileID: 4253632110298724155}
   m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
@@ -88,7 +88,7 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1115389807178304711}
-  m_Text: LOREM IPSUM
+  m_Text: "ONCE UPON A TIME, THERE WAS               . HE WAS ALONE.\r"
   m_OffsetZ: 0
   m_CharacterSize: 1
   m_LineSpacing: 1
@@ -102,7 +102,7 @@ TextMesh:
   m_Color:
     serializedVersion: 2
     rgba: 4294967295
---- !u!61 &5697924345892770433
+--- !u!61 &4253632110298724155
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -134,7 +134,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 154.6034, y: 0}
+  m_Offset: {x: 625.35004, y: -0.8831005}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -145,5 +145,5 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 312.24292, y: 43.08}
+  m_Size: {x: 1250.7001, y: 40.612965}
   m_EdgeRadius: 0

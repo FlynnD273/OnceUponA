@@ -4,29 +4,35 @@ using UnityEngine;
 
 public class VisibilityTrigger : MonoBehaviour
 {
-    public TriggerLogic Trigger;
-    public GameObject[] Visible;
-    public GameObject[] Invisible;
+  public TriggerLogic Trigger;
+  public GameObject[] Visible;
+  public GameObject[] Invisible;
 
-    public void Start()
+  public void Start()
+  {
+    /* if (audioSource == null) { */
+    /*   audioSource = gameObject.AddComponent<AudioSource>(); */
+    /* } */
+    if (Trigger == null)
     {
-        if (Trigger == null)
-        {
-            Trigger = GetComponent<TriggerLogic>();
-        }
-        Trigger.StateChanged += StateChanged;
+      Trigger = GetComponent<TriggerLogic>();
     }
+    Trigger.StateChanged += StateChanged;
+  }
 
-    public void StateChanged()
+  public void StateChanged()
+  {
+    foreach (var go in Visible)
     {
-        foreach (var go in Visible)
-        {
-            go.SetActive(!Trigger.State);
-        }
-        foreach (var go in Invisible)
-        {
-            go.SetActive(Trigger.State);
-        }
+      go.SetActive(!Trigger.State);
     }
+    foreach (var go in Invisible)
+    {
+      go.SetActive(Trigger.State);
+    }
+    if (Trigger.State) {
+      GameManager.Manager.JustActivated();
+    }
+  }
 
 }
