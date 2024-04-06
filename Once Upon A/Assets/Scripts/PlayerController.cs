@@ -107,7 +107,7 @@ public class PlayerController : MonoBehaviour
     }
     else
     {
-      if (Math.Abs(rb.velocity.y) <= 0)
+      if (rb.velocity.y <= 0)
       {
         State = PlayerState.Falling;
       }
