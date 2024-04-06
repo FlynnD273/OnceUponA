@@ -55,11 +55,6 @@ public class GameManager : MonoBehaviour
     {
       Reset();
     }
-    if (Input.GetButtonDown("CHEAT:("))
-    {
-      GameObject.Find("Player").transform.position = GameObject.Find("Cheater").transform.position;
-
-    }
   }
 
   void LateUpdate()
