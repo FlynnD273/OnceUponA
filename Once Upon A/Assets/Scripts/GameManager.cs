@@ -7,6 +7,10 @@ using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
+  public Font font;
+  public Dictionary<char, int> fontAdvances;
+  private string allChars = "\"#$%&'(*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
+
   public AudioClip[] PageTurnClips;
 
   private static GameManager manager;
@@ -41,6 +45,12 @@ public class GameManager : MonoBehaviour
     audioSource = GetComponent<AudioSource>();
     Manager = this;
     SceneManager.sceneLoaded += OnSceneLoaded;
+
+    foreach (char c in allChars)
+    {
+      font.GetCharacterInfo(c, out CharacterInfo info, 500);
+      fontAdvances.Add(c, info.advance);
+    }
   }
 
   private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
