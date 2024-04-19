@@ -33,30 +33,39 @@ public class WordSlotController : TriggerLogic
 
       if (value == null)
       {
-        text.text = ""; //new string('_', (int)(trigger.bounds.size.x / 0.05 / 25));
+        text.Text = ""; //new string('_', (int)(trigger.bounds.size.x / 0.05 / 25));
         /* text.color = WordToColor[WordType.Normal]; */
       }
       else
       {
-        text.color = WordToColor[value.Type];
-        text.text = value.Text;
+        text.Color = WordToColor[value.Type];
+        text.Text = value.Text;
       }
 
-      if (line != null)
-      {
-        line.startColor = WordToColor[value?.Type ?? WordType.White];
-        line.endColor = line.startColor;
-      }
+      line.startColor = WordToColor[value?.Type ?? WordType.White];
+      line.endColor = line.startColor;
     }
   }
 
   public WordType StartingWordType;
   public string TriggerWord;
   public bool Invert;
-  public bool IsSwappable = true;
+  public bool IsSwappableAtStart = true;
 
-  private Collider2D trigger;
-  private TextMesh text;
+
+  private bool isSwappable = true;
+  public bool IsSwappable
+  {
+    get => isSwappable;
+    set
+    {
+      UpdateUnderline();
+      isSwappable = value;
+    }
+  }
+
+  private BoxCollider2D trigger;
+  private DynamicText text;
 
   private int startLength;
   private LineRenderer line;
@@ -69,38 +78,54 @@ public class WordSlotController : TriggerLogic
   void Awake()
   {
     audioSource = GetComponent<AudioSource>();
-    text = GetComponent<TextMesh>();
-    startLength = text.text.Length;
-    trigger = GetComponent<Collider2D>();
+    text = GetComponent<DynamicText>();
+    trigger = GetComponent<BoxCollider2D>();
 
-    if (IsSwappable)
+    line = gameObject.AddComponent<LineRenderer>();
+    line.useWorldSpace = false;
+    line.material = new Material(Shader.Find("Legacy Shaders/Particles/Alpha Blended Premultiply"));
+    line.startWidth = 0.15f;
+    line.endWidth = line.startWidth;
+    line.numCapVertices = 5;
+    line.positionCount = 2;
+
+    text.TextChanged += UpdateUnderline;
+  }
+
+  private void UpdateUnderline()
+  {
+    if (!IsSwappable)
     {
-      line = gameObject.AddComponent<LineRenderer>();
-      line.material = new Material(Shader.Find("Legacy Shaders/Particles/Alpha Blended Premultiply"));
-      line.startColor = WordToColor[CurrentWord?.Type ?? WordType.White];
-      line.startWidth = 0.15f;
-      line.endColor = line.startColor;
-      line.endWidth = line.startWidth;
-      line.numCapVertices = 5;
-      line.positionCount = 2;
-      line.SetPositions(new Vector3[] { new Vector3(transform.position.x, transform.position.y - 1.25f), new Vector3(transform.position.x + trigger.bounds.size.x, transform.position.y - 1.25f) });
+      line.enabled = false;
+      return;
     }
+    else
+    {
+      line.enabled = true;
+    }
+    line.startColor = WordToColor[CurrentWord?.Type ?? WordType.White];
+    line.endColor = line.startColor;
+    line.SetPositions(new Vector3[] { new Vector3(0, -1.25f / transform.localScale.y), new Vector3(text.Width, -1.25f / transform.localScale.y) });
+
+    trigger.size = new Vector2(text.Width, trigger.size.y);
+    trigger.offset = new Vector2(text.Width / 2, trigger.offset.y);
   }
 
   public override void Init()
   {
     base.Init();
-    if (text.text.Trim('_').Length == 0)
+    if (text.Text.Trim('_').Length == 0)
     {
       CurrentWord = null;
     }
     else
     {
-      CurrentWord = new(StartingWordType, text.text);
+      CurrentWord = new(StartingWordType, text.Text);
     }
 
     GameManager.Manager.ResetOccurred += Reset;
     GameManager.Manager.SaveStateOccurred += SaveState;
+    UpdateUnderline();
   }
 
   private void Reset()
@@ -120,7 +145,8 @@ public class WordSlotController : TriggerLogic
     return temp;
   }
 
-  void OnDestroy() {
+  void OnDestroy()
+  {
     GameManager.Manager.ResetOccurred -= Reset;
     GameManager.Manager.SaveStateOccurred -= SaveState;
   }

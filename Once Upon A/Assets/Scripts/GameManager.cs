@@ -8,8 +8,8 @@ using Random = UnityEngine.Random;
 public class GameManager : MonoBehaviour
 {
   public Font font;
-  public Dictionary<char, int> fontAdvances;
-  private string allChars = "\"#$%&'(*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
+  public Dictionary<char, float> fontAdvances;
+  private string allChars = " \"#$%&'(*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
 
   public AudioClip[] PageTurnClips;
 
@@ -46,10 +46,11 @@ public class GameManager : MonoBehaviour
     Manager = this;
     SceneManager.sceneLoaded += OnSceneLoaded;
 
+    fontAdvances = new();
     foreach (char c in allChars)
     {
       font.GetCharacterInfo(c, out CharacterInfo info, 500);
-      fontAdvances.Add(c, info.advance);
+      fontAdvances.Add(c, info.advance / 10f);
     }
   }
 
