@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class TriggerLogic : MonoBehaviour
 {
+  public TriggerLogic[] InvolvedSlots = new TriggerLogic[0];
   private bool didInit;
 
   public event Action StateChanged;

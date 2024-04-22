@@ -215,21 +215,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Once upon a
       objectReference: {fileID: 0}
+    - target: {fileID: 3847179785033722344, guid: a7be1925c6d53684aa71db1112c0660c, type: 3}
+      propertyPath: Children.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3847179785033722344, guid: a7be1925c6d53684aa71db1112c0660c, type: 3}
+      propertyPath: Children.Array.data[0]
+      value: 
+      objectReference: {fileID: 611637556}
     - target: {fileID: 6245029124709407783, guid: a7be1925c6d53684aa71db1112c0660c, type: 3}
       propertyPath: m_Text
       value: "ONCE UPON A TIME, THERE WAS $$. HE WAS ALONE.\r"
       objectReference: {fileID: 0}
-    - target: {fileID: 6245029124709407783, guid: a7be1925c6d53684aa71db1112c0660c, type: 3}
-      propertyPath: m_RichText
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1115389807178304711, guid: a7be1925c6d53684aa71db1112c0660c, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1450662932}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a7be1925c6d53684aa71db1112c0660c, type: 3}
 --- !u!1001 &600436783
 PrefabInstance:
@@ -342,23 +343,14 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3927319715469381938, guid: 01e40de04f5ea2f4abf364ca8b4d76e1, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 611637556}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 01e40de04f5ea2f4abf364ca8b4d76e1, type: 3}
---- !u!1 &611637550 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3927319715469381938, guid: 01e40de04f5ea2f4abf364ca8b4d76e1, type: 3}
+--- !u!114 &611637556 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7767151763275869784, guid: 01e40de04f5ea2f4abf364ca8b4d76e1, type: 3}
   m_PrefabInstance: {fileID: 600436783}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &611637556
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 611637550}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cb9989e3512e6864e8728639c694b85c, type: 3}
@@ -603,26 +595,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fcb2bf8acf8c91468a867091834aa60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1450662927 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1115389807178304711, guid: a7be1925c6d53684aa71db1112c0660c, type: 3}
-  m_PrefabInstance: {fileID: 113731455}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1450662932
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1450662927}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e37233479dcfd4c448e03b8c4c070743, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  StaticTextPrefab: {fileID: 3388957756455371124, guid: 45613632338d24841b5e9aa711bec6d0, type: 3}
-  Children:
-  - {fileID: 611637556}
 --- !u!1001 &1586434467
 PrefabInstance:
   m_ObjectHideFlags: 0

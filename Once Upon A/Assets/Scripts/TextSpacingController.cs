@@ -9,12 +9,13 @@ public class TextSpacingController : MonoBehaviour
   public DynamicText[] Children;
   private string placeholderString = "$$";
   private List<DynamicText> allChildren;
-  
+
   private BoxCollider2D coll;
 
   // Start is called before the first frame update
   void Start()
   {
+    GetComponent<DynamicText>().TargetPosition = transform.position;
     coll = GetComponent<BoxCollider2D>();
     TextMesh textMesh = GetComponent<TextMesh>();
     allChildren = new();
@@ -22,7 +23,7 @@ public class TextSpacingController : MonoBehaviour
 
     int startIndex = 0;
     int dynamicIndex = 0;
-    for (int i = 0; i < text.Length - placeholderString.Length; i++)
+    for (int i = 0; i < text.Length - placeholderString.Length + 1; i++)
     {
       if (placeholderString == text.Substring(i, placeholderString.Length))
       {
@@ -59,6 +60,31 @@ public class TextSpacingController : MonoBehaviour
     {
       child.TextChanged += UpdateAll;
     }
+
+    foreach (var child in allChildren)
+    {
+      child.transform.SetParent(transform);
+    }
+  }
+
+  private bool hasInit = false;
+
+  void Update()
+  {
+    if (!hasInit)
+    {
+      hasInit = true;
+      UpdateAll();
+      SnapPosition();
+    }
+  }
+
+  private void SnapPosition()
+  {
+    foreach (var child in allChildren)
+    {
+      child.transform.position = child.TargetPosition;
+    }
   }
 
   private void UpdateAll()
@@ -66,12 +92,13 @@ public class TextSpacingController : MonoBehaviour
     float spacing = 0;
     foreach (var child in allChildren)
     {
-      child.transform.position = new Vector3(transform.position.x + spacing * transform.localScale.x, transform.position.y, 1);
-      child.transform.localScale = this.transform.localScale;
+      child.TargetPosition = new Vector3(spacing, 0, 1);
+      child.transform.localScale = new Vector3(1, 1, 1);
       spacing += child.Width;
     }
 
-    if (coll != null) {
+    if (coll != null)
+    {
       coll.size = new Vector2(spacing, coll.size.y);
       coll.offset = new Vector2(spacing / 2, coll.offset.y);
     }

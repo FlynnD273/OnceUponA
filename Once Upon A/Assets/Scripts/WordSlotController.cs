@@ -1,11 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using static Utils.Constants;
 using UnityEngine;
-using System.Diagnostics;
-using Debug = UnityEngine.Debug;
-using System;
-using System.Linq;
 
 public class WordSlotController : TriggerLogic
 {
@@ -33,8 +27,7 @@ public class WordSlotController : TriggerLogic
 
       if (value == null)
       {
-        text.Text = ""; //new string('_', (int)(trigger.bounds.size.x / 0.05 / 25));
-        /* text.color = WordToColor[WordType.Normal]; */
+        text.Text = "";
       }
       else
       {
@@ -59,8 +52,8 @@ public class WordSlotController : TriggerLogic
     get => isSwappable;
     set
     {
-      UpdateUnderline();
       isSwappable = value;
+      UpdateUnderline();
     }
   }
 
@@ -77,6 +70,7 @@ public class WordSlotController : TriggerLogic
   // Start is called before the first frame update
   void Awake()
   {
+    InvolvedSlots = new TriggerLogic[] { this };
     audioSource = GetComponent<AudioSource>();
     text = GetComponent<DynamicText>();
     trigger = GetComponent<BoxCollider2D>();
@@ -92,20 +86,18 @@ public class WordSlotController : TriggerLogic
     text.TextChanged += UpdateUnderline;
   }
 
-  private void UpdateUnderline()
+  public void UpdateUnderline()
   {
     if (!IsSwappable)
     {
       line.enabled = false;
       return;
     }
-    else
-    {
-      line.enabled = true;
-    }
+
+    line.enabled = true;
     line.startColor = WordToColor[CurrentWord?.Type ?? WordType.White];
     line.endColor = line.startColor;
-    line.SetPositions(new Vector3[] { new Vector3(0, -1.25f / transform.localScale.y), new Vector3(text.Width, -1.25f / transform.localScale.y) });
+    line.SetPositions(new Vector3[] { new Vector3(0, -25), new Vector3(text.Width, -25) });
 
     trigger.size = new Vector2(text.Width, trigger.size.y);
     trigger.offset = new Vector2(text.Width / 2, trigger.offset.y);
@@ -125,7 +117,7 @@ public class WordSlotController : TriggerLogic
 
     GameManager.Manager.ResetOccurred += Reset;
     GameManager.Manager.SaveStateOccurred += SaveState;
-    UpdateUnderline();
+    IsSwappable = IsSwappableAtStart;
   }
 
   private void Reset()

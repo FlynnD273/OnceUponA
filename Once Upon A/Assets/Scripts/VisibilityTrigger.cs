@@ -5,14 +5,14 @@ using UnityEngine;
 public class VisibilityTrigger : MonoBehaviour
 {
   public TriggerLogic Trigger;
-  public GameObject[] Visible;
-  public GameObject[] Invisible;
+  public DynamicText[] Visible;
+  public DynamicText[] Invisible;
+
+  public DangerController[] Dangerous;
+  public DangerController[] Nondangerous;
 
   public void Start()
   {
-    /* if (audioSource == null) { */
-    /*   audioSource = gameObject.AddComponent<AudioSource>(); */
-    /* } */
     if (Trigger == null)
     {
       Trigger = GetComponent<TriggerLogic>();
@@ -24,15 +24,36 @@ public class VisibilityTrigger : MonoBehaviour
   {
     foreach (var go in Visible)
     {
-      go.SetActive(!Trigger.State);
+      if (go == null) { continue; }
+      go.SetVisibility(!Trigger.State);
     }
     foreach (var go in Invisible)
     {
-      go.SetActive(Trigger.State);
+      if (go == null) { continue; }
+      go.SetVisibility(Trigger.State);
     }
-    if (Trigger.State) {
+    foreach (var go in Dangerous)
+    {
+      if (go == null) { continue; }
+      go.IsDangerous = !Trigger.State;
+    }
+    foreach (var go in Nondangerous)
+    {
+      if (go == null) { continue; }
+      go.IsDangerous = Trigger.State;
+    }
+
+    if (Trigger.State)
+    {
+      foreach (var go in Trigger.InvolvedSlots)
+      {
+        var slot = go.GetComponent<WordSlotController>();
+        if (slot != null)
+        {
+          slot.IsSwappable = false;
+        }
+      }
       GameManager.Manager.JustActivated();
     }
   }
-
 }

@@ -7,9 +7,7 @@ using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
-  public Font font;
-  public Dictionary<char, float> fontAdvances;
-  private string allChars = " \"#$%&'(*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
+
 
   public AudioClip[] PageTurnClips;
 
@@ -42,16 +40,9 @@ public class GameManager : MonoBehaviour
   // Start is called before the first frame update
   void Awake()
   {
-    audioSource = GetComponent<AudioSource>();
     Manager = this;
+    audioSource = GetComponent<AudioSource>();
     SceneManager.sceneLoaded += OnSceneLoaded;
-
-    fontAdvances = new();
-    foreach (char c in allChars)
-    {
-      font.GetCharacterInfo(c, out CharacterInfo info, 500);
-      fontAdvances.Add(c, info.advance / 10f);
-    }
   }
 
   private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)

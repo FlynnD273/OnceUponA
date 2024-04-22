@@ -17,6 +17,7 @@ public class LogicOperatorController : TriggerLogic
         {
             slot.StateChanged += UpdateState;
         }
+        InvolvedSlots = Slots;
         UpdateState();
     }
 

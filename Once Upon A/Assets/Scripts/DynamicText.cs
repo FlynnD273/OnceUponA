@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
+using Utils;
 
 public class DynamicText : MonoBehaviour
 {
+  public Vector3 TargetPosition;
   public event Action TextChanged;
-  private TextMesh textMesh;
+  internal TextMesh textMesh;
 
   public string Text
   {
@@ -31,18 +33,21 @@ public class DynamicText : MonoBehaviour
   }
 
 
-  void Start()
+  void Awake()
   {
     textMesh = GetComponent<TextMesh>();
+    TargetPosition = transform.position;
   }
 
-  private bool hasInit = false;
-  void Update()
+  void FixedUpdate()
   {
-    if (!hasInit)
+    if ((transform.position - TargetPosition).sqrMagnitude < 0.1f)
     {
-      Text = textMesh.text;
-      hasInit = true;
+      transform.localPosition = TargetPosition;
+    }
+    else
+    {
+      transform.localPosition = Vector3.Lerp(transform.localPosition, TargetPosition, 0.5f);
     }
   }
 
@@ -50,23 +55,45 @@ public class DynamicText : MonoBehaviour
   {
     get
     {
-      if (string.IsNullOrEmpty(Text))
+      var slot = GetComponent<WordSlotController>();
+      if (slot != null && !slot.IsSwappable && slot.CurrentWord == null)
       {
-        return GameManager.Manager.fontAdvances['M'] * 3;
+        return -Constants.CharWidths[' '];
+      }
+
+      if (Text == "")
+      {
+        return Constants.CharWidths['M'] * 3;
       }
       float sum = 0;
       foreach (var c in Text)
       {
-        if (GameManager.Manager.fontAdvances.TryGetValue(c, out float w))
-        {
-          sum += w;
-        }
-        else if (!char.IsWhiteSpace(c))
-        {
-          Debug.LogWarning($"Unknown character \'{Regex.Escape("" + c)}\'");
-        }
+        sum += Constants.CharWidths[c];
       }
       return sum;
+    }
+  }
+
+  public void SetVisibility(bool isVisible)
+  {
+    GetComponent<Renderer>().enabled = isVisible;
+    foreach (var coll in GetComponents<Collider2D>())
+    {
+      coll.enabled = isVisible;
+    }
+    foreach (var child in GetComponentsInChildren<DynamicText>())
+    {
+      if (child.gameObject == this.gameObject)
+      {
+        continue;
+      }
+      child.SetVisibility(isVisible);
+    }
+
+    var slot = GetComponent<WordSlotController>();
+    if (slot != null)
+    {
+      slot.UpdateUnderline();
     }
   }
 }
