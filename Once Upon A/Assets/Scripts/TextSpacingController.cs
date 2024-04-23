@@ -12,6 +12,17 @@ public class TextSpacingController : MonoBehaviour
 
   private BoxCollider2D coll;
 
+  private DynamicText CreateStaticText(string text)
+  {
+    string subtext = text;
+
+    var go = Instantiate(StaticTextPrefab);
+    go.name = $"{gameObject.name}:{subtext}";
+    var gText = go.GetComponent<TextMesh>();
+    gText.text = subtext;
+    return go.GetComponent<DynamicText>();
+  }
+
   // Start is called before the first frame update
   void Start()
   {
@@ -29,15 +40,16 @@ public class TextSpacingController : MonoBehaviour
       {
         if (startIndex != i)
         {
-          string subtext = text.Substring(startIndex, i - startIndex);
-
-          var go = Instantiate(StaticTextPrefab);
-          go.name = $"{gameObject.name}:{subtext}";
-          var gText = go.GetComponent<TextMesh>();
-          allChildren.Add(go.GetComponent<DynamicText>());
-          gText.text = subtext;
+          allChildren.Add(CreateStaticText(text.Substring(startIndex, i - startIndex)));
         }
-        allChildren.Add(Children[dynamicIndex]);
+        if (dynamicIndex < Children.Length)
+        {
+          allChildren.Add(Children[dynamicIndex]);
+        }
+        else
+        {
+          allChildren.Add(CreateStaticText(placeholderString));
+        }
         dynamicIndex++;
         startIndex = i + placeholderString.Length;
         i += placeholderString.Length;
@@ -56,13 +68,11 @@ public class TextSpacingController : MonoBehaviour
     }
 
     textMesh.text = "";
-    foreach (var child in Children)
-    {
-      child.TextChanged += UpdateAll;
-    }
 
     foreach (var child in allChildren)
     {
+      child.TextChanged += UpdateAll;
+      child.VisibilityChanged += UpdateVis;
       child.transform.SetParent(transform);
     }
   }
@@ -83,8 +93,14 @@ public class TextSpacingController : MonoBehaviour
   {
     foreach (var child in allChildren)
     {
-      child.transform.position = child.TargetPosition;
+      child.transform.localPosition = child.TargetPosition;
     }
+  }
+
+  private void UpdateVis()
+  {
+    UpdateAll();
+    SnapPosition();
   }
 
   private void UpdateAll()

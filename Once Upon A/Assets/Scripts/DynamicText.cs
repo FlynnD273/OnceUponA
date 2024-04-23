@@ -10,33 +10,58 @@ public class DynamicText : MonoBehaviour
 {
   public Vector3 TargetPosition;
   public event Action TextChanged;
+  public event Action VisibilityChanged;
   internal TextMesh textMesh;
+  private bool savedIsVisible;
+  private bool isVisible;
+  public bool IsVisible
+  {
+    get => isVisible;
+    set
+    {
+      isVisible = value;
+      UpdateVisibility();
+    }
+  }
 
   public string Text
   {
-    get => textMesh.text;
+    get
+    {
+      if (textMesh != null)
+      {
+        return textMesh.text;
+      }
+      return "";
+    }
     set
     {
-      textMesh.text = value;
+      if (textMesh != null)
+      {
+        textMesh.text = value;
+      }
       TextChanged?.Invoke();
     }
   }
 
   public Color Color
   {
-    get => textMesh.color;
+    get => textMesh?.color ?? Color.white;
     set
     {
-      textMesh.color = value;
+      if (textMesh != null)
+      {
+        textMesh.color = value;
+      }
       TextChanged?.Invoke();
     }
   }
-
 
   void Awake()
   {
     textMesh = GetComponent<TextMesh>();
     TargetPosition = transform.position;
+    IsVisible = true;
   }
 
   void FixedUpdate()
@@ -56,7 +81,7 @@ public class DynamicText : MonoBehaviour
     get
     {
       var slot = GetComponent<WordSlotController>();
-      if (slot != null && !slot.IsSwappable && slot.CurrentWord == null)
+      if (!IsVisible || (slot != null && !slot.IsSwappable && slot.CurrentWord == null))
       {
         return -Constants.CharWidths[' '];
       }
@@ -74,7 +99,18 @@ public class DynamicText : MonoBehaviour
     }
   }
 
-  public void SetVisibility(bool isVisible)
+  private bool init = false;
+  void Update()
+  {
+    if (!init)
+    {
+      init = true;
+      GameManager.Manager.ResetOccurred += Reset;
+      GameManager.Manager.SaveStateOccurred += SaveState;
+    }
+  }
+
+  private void UpdateVisibility()
   {
     GetComponent<Renderer>().enabled = isVisible;
     foreach (var coll in GetComponents<Collider2D>())
@@ -87,13 +123,24 @@ public class DynamicText : MonoBehaviour
       {
         continue;
       }
-      child.SetVisibility(isVisible);
+      child.IsVisible = isVisible;
     }
+    VisibilityChanged?.Invoke();
+  }
 
-    var slot = GetComponent<WordSlotController>();
-    if (slot != null)
-    {
-      slot.UpdateUnderline();
-    }
+  private void Reset()
+  {
+    IsVisible = savedIsVisible;
+  }
+
+  private void SaveState()
+  {
+    savedIsVisible = IsVisible;
+  }
+
+  void OnDestroy()
+  {
+    GameManager.Manager.ResetOccurred -= Reset;
+    GameManager.Manager.SaveStateOccurred -= SaveState;
   }
 }

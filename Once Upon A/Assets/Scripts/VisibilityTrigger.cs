@@ -25,12 +25,12 @@ public class VisibilityTrigger : MonoBehaviour
     foreach (var go in Visible)
     {
       if (go == null) { continue; }
-      go.SetVisibility(!Trigger.State);
+      go.IsVisible = !Trigger.State;
     }
     foreach (var go in Invisible)
     {
       if (go == null) { continue; }
-      go.SetVisibility(Trigger.State);
+      go.IsVisible = Trigger.State;
     }
     foreach (var go in Dangerous)
     {
@@ -47,6 +47,7 @@ public class VisibilityTrigger : MonoBehaviour
     {
       foreach (var go in Trigger.InvolvedSlots)
       {
+        if (go == null) { continue; }
         var slot = go.GetComponent<WordSlotController>();
         if (slot != null)
         {

@@ -54,6 +54,7 @@ public class WordSlotController : TriggerLogic
     {
       isSwappable = value;
       UpdateUnderline();
+      text.Text = text.Text;
     }
   }
 
@@ -66,6 +67,7 @@ public class WordSlotController : TriggerLogic
   private AudioSource audioSource;
 
   private Word savedWord;
+  private bool savedIsSwappable;
 
   // Start is called before the first frame update
   void Awake()
@@ -84,11 +86,12 @@ public class WordSlotController : TriggerLogic
     line.positionCount = 2;
 
     text.TextChanged += UpdateUnderline;
+    text.VisibilityChanged += UpdateUnderline;
   }
 
   public void UpdateUnderline()
   {
-    if (!IsSwappable)
+    if (!text.IsVisible || !IsSwappable)
     {
       line.enabled = false;
       return;
@@ -122,12 +125,14 @@ public class WordSlotController : TriggerLogic
 
   private void Reset()
   {
+    IsSwappable = savedIsSwappable;
     CurrentWord = savedWord;
   }
 
   private void SaveState()
   {
     savedWord = CurrentWord;
+    savedIsSwappable = IsSwappable;
   }
 
   public Word Swap(Word newWord)
