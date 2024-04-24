@@ -47,6 +47,7 @@ public class TextSpacingController : MonoBehaviour
         if (startIndex != i)
         {
           allChildren.Add(CreateStaticText(text.Substring(startIndex, i - startIndex)));
+          extraWidth.Add(0);
         }
         if (dynamicIndex < Children.Length)
         {
@@ -56,29 +57,26 @@ public class TextSpacingController : MonoBehaviour
         {
           allChildren.Add(CreateStaticText("null"));
         }
-        dynamicIndex++;
-        startIndex = i + placeholderString.Length;
-        i += placeholderString.Length - 1;
         if (i > 0 && text[i - 1] != ' ')
-        {
-          extraWidth.Add(Constants.CharWidths[' ']);
-        }
-        else
         {
           extraWidth.Add(0);
         }
+        else
+        {
+          extraWidth.Add(-Constants.CharWidths[' ']);
+        }
+        dynamicIndex++;
+        startIndex = i + placeholderString.Length;
+        i += placeholderString.Length - 1;
       }
     }
 
     if (startIndex < text.Length)
     {
       string subtext = text.Substring(startIndex, text.Length - startIndex);
+      allChildren.Add(CreateStaticText(subtext));
 
-      var go = Instantiate(StaticTextPrefab);
-      go.name = $"{gameObject.name}:{subtext}";
-      var gText = go.GetComponent<TextMesh>();
-      allChildren.Add(go.GetComponent<DynamicText>());
-      gText.text = subtext;
+      extraWidth.Add(0);
     }
 
     textMesh.text = "";
@@ -130,7 +128,14 @@ public class TextSpacingController : MonoBehaviour
       child.TargetPosition = new Vector3(spacing, 0, 1);
       child.transform.localScale = new Vector3(1, 1, 1);
       child.transform.rotation = transform.rotation;
-      spacing += child.Width + extraSpace;
+      if (child.Width == 0)
+      {
+        spacing += extraSpace;
+      }
+      else
+      {
+        spacing += child.Width;
+      }
     }
 
     if (coll != null)

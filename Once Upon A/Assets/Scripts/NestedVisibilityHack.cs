@@ -16,6 +16,7 @@ public class NestedVisibilityHack : MonoBehaviour
       ParentVis = GetComponent<VisibilityTrigger>();
     }
     ParentVis.Trigger.StateChanged += OnStateChange;
+    needsUpdate = 3;
   }
 
   private void OnStateChange()
@@ -32,7 +33,21 @@ public class NestedVisibilityHack : MonoBehaviour
     if (needsUpdate == 0)
     {
       needsUpdate = -1;
-      NestedVis.StateChanged();
+      if (ParentVis.Trigger.State)
+      {
+        NestedVis.StateChanged();
+      }
+      else
+      {
+        if (NestedVis != null)
+        {
+          foreach (var go in NestedVis.Visible)
+          {
+            if (go.gameObject == this.gameObject) { continue; }
+            go.SetIsVisibleQuiet(false);
+          }
+        }
+      }
     }
   }
 }

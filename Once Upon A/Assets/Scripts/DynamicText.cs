@@ -66,6 +66,8 @@ public class DynamicText : MonoBehaviour
 
   void FixedUpdate()
   {
+    if (GameManager.Manager.IsPaused) { return; }
+
     if ((transform.position - TargetPosition).sqrMagnitude < 0.1f)
     {
       transform.localPosition = TargetPosition;
@@ -88,7 +90,7 @@ public class DynamicText : MonoBehaviour
       var slot = GetComponent<WordSlotController>();
       if (!IsVisible || (slot != null && !slot.IsSwappable && slot.CurrentWord == null))
       {
-        return -Constants.CharWidths[' '];
+        return 0;
       }
 
       if (Text == "")

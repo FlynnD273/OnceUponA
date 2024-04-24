@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 2281190334410956710}
   - component: {fileID: 2738949925283040018}
   - component: {fileID: 2689769218992680511}
-  - component: {fileID: 1212003689921306357}
   - component: {fileID: 825249979247185429}
   - component: {fileID: 7450556856141308236}
   m_Layer: 0
@@ -98,6 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f3c0839e603904429ba56b0eabb1f90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DebugState: 0
   InvolvedSlots: []
 --- !u!102 &2689769218992680511
 TextMesh:
@@ -121,24 +121,6 @@ TextMesh:
   m_Color:
     serializedVersion: 2
     rgba: 4289986815
---- !u!114 &1212003689921306357
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2986855797147862082}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49d94e1304f22fa458eabc19db1bb446, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Deactivated: 0
-  Trigger: {fileID: 0}
-  Visible: []
-  Invisible: []
-  Dangerous: []
-  Nondangerous: []
 --- !u!114 &825249979247185429
 MonoBehaviour:
   m_ObjectHideFlags: 0
