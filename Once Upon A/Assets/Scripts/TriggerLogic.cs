@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class TriggerLogic : MonoBehaviour
 {
+  public bool DebugState;
   public TriggerLogic[] InvolvedSlots = new TriggerLogic[0];
   private bool didInit;
 
@@ -19,6 +20,7 @@ public class TriggerLogic : MonoBehaviour
     internal set
     {
       state = value;
+      DebugState = state;
       StateChanged?.Invoke();
     }
   }

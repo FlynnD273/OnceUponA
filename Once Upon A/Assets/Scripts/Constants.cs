@@ -23,6 +23,7 @@ namespace Utils
       Bouncy,
       Danger,
       White,
+      Corrupt,
     }
     public static Dictionary<WordType, Color> WordToColor;
 
@@ -33,6 +34,7 @@ namespace Utils
       WordToColor.Add(WordType.Normal, Utils.FromHex("558dfc"));
       WordToColor.Add(WordType.Bouncy, Utils.FromHex("66fc55"));
       WordToColor.Add(WordType.Danger, Utils.FromHex("fc5577"));
+      WordToColor.Add(WordType.Corrupt, Utils.FromHex("fc53f1"));
       WordToColor.Add(WordType.White, Color.white);
     }
 

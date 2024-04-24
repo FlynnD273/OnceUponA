@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class TextSpacingController : MonoBehaviour
 {
+  private float width;
+  public float Width { get => width; private set => width = value; }
+
   public GameObject StaticTextPrefab;
   public DynamicText[] Children;
   private string placeholderString = "$$";
@@ -48,11 +51,11 @@ public class TextSpacingController : MonoBehaviour
         }
         else
         {
-          allChildren.Add(CreateStaticText(placeholderString));
+          allChildren.Add(CreateStaticText("null"));
         }
         dynamicIndex++;
         startIndex = i + placeholderString.Length;
-        i += placeholderString.Length;
+        i += placeholderString.Length - 1;
       }
     }
 
@@ -78,6 +81,7 @@ public class TextSpacingController : MonoBehaviour
   }
 
   private bool hasInit = false;
+
 
   void Update()
   {
@@ -110,6 +114,7 @@ public class TextSpacingController : MonoBehaviour
     {
       child.TargetPosition = new Vector3(spacing, 0, 1);
       child.transform.localScale = new Vector3(1, 1, 1);
+      child.transform.rotation = transform.rotation;
       spacing += child.Width;
     }
 
@@ -118,5 +123,6 @@ public class TextSpacingController : MonoBehaviour
       coll.size = new Vector2(spacing, coll.size.y);
       coll.offset = new Vector2(spacing / 2, coll.offset.y);
     }
+    Width = spacing;
   }
 }

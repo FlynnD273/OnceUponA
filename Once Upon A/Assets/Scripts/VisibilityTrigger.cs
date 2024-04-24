@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class VisibilityTrigger : MonoBehaviour
 {
+  public bool Deactivated;
   public TriggerLogic Trigger;
   public DynamicText[] Visible;
   public DynamicText[] Invisible;
@@ -22,6 +23,10 @@ public class VisibilityTrigger : MonoBehaviour
 
   public void StateChanged()
   {
+    if (Deactivated)
+    {
+      return;
+    }
     foreach (var go in Visible)
     {
       if (go == null) { continue; }

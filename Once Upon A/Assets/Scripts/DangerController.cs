@@ -37,12 +37,17 @@ public class DangerController : DynamicText
   void Start()
   {
     isDangerous = true;
-    trigger = GetComponent<Collider2D>(); 
+    trigger = GetComponent<Collider2D>();
+    if (DeactivateTrigger != null)
+    {
+      DeactivateTrigger.StateChanged += () => IsDangerous = !DeactivateTrigger.State;
+    }
   }
 
   void OnTriggerEnter2D(Collider2D coll)
   {
-    if (coll.gameObject.layer == (int)Layers.Player)
+    bool triggered = (DeactivateTrigger != null && !DeactivateTrigger.State);
+    if (IsVisible && (triggered || coll.gameObject.layer == (int)Layers.Player))
     {
       coll.GetComponent<Rigidbody2D>().velocity = new Vector2(Direction.normalized.x * Power, Direction.normalized.y * Power);
       coll.GetComponent<PlayerController>().LockControls(LockTime);

@@ -70,6 +70,7 @@ public class GameManager : MonoBehaviour
     {
       audioSource.clip = GameManager.Manager.PageTurnClips[Random.Range(0, PageTurnClips.Length)];
       audioSource.Play();
+      SaveState();
     }
     justSwapped = false;
     justActivated = false;

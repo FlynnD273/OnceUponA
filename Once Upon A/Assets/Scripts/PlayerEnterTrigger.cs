@@ -5,19 +5,30 @@ using static Utils.Constants;
 
 public class PlayerEnterTrigger : TriggerLogic
 {
-    void OnTriggerEnter2D(Collider2D coll)
-    {
-        if (coll.gameObject.layer == (int)Layers.Player)
-        {
-          State = true;
-        }
-    }
+  private bool savedState;
 
-    /* void OnTriggerExit2D(Collider2D coll) */
-    /* { */
-    /*     if (coll.gameObject.layer == (int)Layers.Player) */
-    /*     { */
-    /*       State = false; */
-    /*     } */
-    /* } */
+  public override void Init()
+  {
+    base.Init();
+    GameManager.Manager.ResetOccurred += Reset;
+    GameManager.Manager.SaveStateOccurred += SaveState;
+  }
+
+  private void Reset()
+  {
+    State = savedState;
+  }
+
+  private void SaveState()
+  {
+    savedState = State;
+  }
+
+  void OnTriggerEnter2D(Collider2D coll)
+  {
+    if (coll.gameObject.layer == (int)Layers.Player)
+    {
+      State = true;
+    }
+  }
 }

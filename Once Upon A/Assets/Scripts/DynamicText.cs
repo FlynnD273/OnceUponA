@@ -80,6 +80,11 @@ public class DynamicText : MonoBehaviour
   {
     get
     {
+      var spacingCont = GetComponent<TextSpacingController>();
+      if (spacingCont != null)
+      {
+        return spacingCont.Width;
+      }
       var slot = GetComponent<WordSlotController>();
       if (!IsVisible || (slot != null && !slot.IsSwappable && slot.CurrentWord == null))
       {
@@ -142,5 +147,23 @@ public class DynamicText : MonoBehaviour
   {
     GameManager.Manager.ResetOccurred -= Reset;
     GameManager.Manager.SaveStateOccurred -= SaveState;
+  }
+
+  public void SetIsVisibleQuiet(bool isVisible)
+  {
+    this.isVisible = isVisible;
+    GetComponent<Renderer>().enabled = isVisible;
+    foreach (var coll in GetComponents<Collider2D>())
+    {
+      coll.enabled = isVisible;
+    }
+    foreach (var child in GetComponentsInChildren<DynamicText>())
+    {
+      if (child.gameObject == this.gameObject)
+      {
+        continue;
+      }
+      child.IsVisible = isVisible;
+    }
   }
 }
