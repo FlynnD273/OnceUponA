@@ -27,6 +27,8 @@ public class TriggerLogic : MonoBehaviour
 
   public void Update()
   {
+    if (GameManager.Manager.IsPaused) { return; }
+
     if (!didInit)
     {
       Init();

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
+using Utils;
 
 public class TextSpacingController : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class TextSpacingController : MonoBehaviour
   public DynamicText[] Children;
   private string placeholderString = "$$";
   private List<DynamicText> allChildren;
+  private List<float> extraWidth;
 
   private BoxCollider2D coll;
 
@@ -33,6 +35,7 @@ public class TextSpacingController : MonoBehaviour
     coll = GetComponent<BoxCollider2D>();
     TextMesh textMesh = GetComponent<TextMesh>();
     allChildren = new();
+    extraWidth = new();
     string text = textMesh.text;
 
     int startIndex = 0;
@@ -56,6 +59,14 @@ public class TextSpacingController : MonoBehaviour
         dynamicIndex++;
         startIndex = i + placeholderString.Length;
         i += placeholderString.Length - 1;
+        if (i > 0 && text[i - 1] != ' ')
+        {
+          extraWidth.Add(Constants.CharWidths[' ']);
+        }
+        else
+        {
+          extraWidth.Add(0);
+        }
       }
     }
 
@@ -85,6 +96,8 @@ public class TextSpacingController : MonoBehaviour
 
   void Update()
   {
+    if (GameManager.Manager.IsPaused) { return; }
+
     if (!hasInit)
     {
       hasInit = true;
@@ -110,12 +123,14 @@ public class TextSpacingController : MonoBehaviour
   private void UpdateAll()
   {
     float spacing = 0;
-    foreach (var child in allChildren)
+    for (int i = 0; i < allChildren.Count; i++)
     {
+      DynamicText child = allChildren[i];
+      float extraSpace = extraWidth[i];
       child.TargetPosition = new Vector3(spacing, 0, 1);
       child.transform.localScale = new Vector3(1, 1, 1);
       child.transform.rotation = transform.rotation;
-      spacing += child.Width;
+      spacing += child.Width + extraSpace;
     }
 
     if (coll != null)

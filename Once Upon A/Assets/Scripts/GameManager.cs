@@ -7,8 +7,6 @@ using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
-
-
   public AudioClip[] PageTurnClips;
 
   private static GameManager manager;
@@ -27,8 +25,26 @@ public class GameManager : MonoBehaviour
     }
   }
 
+  private bool isPaused;
+  public bool IsPaused
+  {
+    get => isPaused; set
+    {
+      isPaused = value;
+      if (isPaused)
+      {
+        Time.timeScale = 0;
+      }
+      else
+      {
+        Time.timeScale = 1;
+      }
+    }
+  }
+
   public event Action ResetOccurred;
   public event Action SaveStateOccurred;
+
 
   private AudioSource audioSource;
 
@@ -53,6 +69,7 @@ public class GameManager : MonoBehaviour
   // Update is called once per frame
   void Update()
   {
+    if (GameManager.Manager.IsPaused) { return; }
     if (Input.GetButtonDown("Reset"))
     {
       Reset();

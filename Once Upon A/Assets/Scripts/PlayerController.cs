@@ -84,6 +84,8 @@ public class PlayerController : MonoBehaviour
   // Update is called once per frame
   void Update()
   {
+    if (GameManager.Manager.IsPaused) { return; }
+
     if (!didSave)
     {
       GameManager.Manager.SaveState();
@@ -260,7 +262,8 @@ public class PlayerController : MonoBehaviour
     return interactingSlots.FirstOrDefault(x => x.IsSwappable);
   }
 
-  void OnDestroy() {
+  void OnDestroy()
+  {
     GameManager.Manager.ResetOccurred -= Reset;
     GameManager.Manager.SaveStateOccurred -= SaveState;
   }

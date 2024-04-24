@@ -19,6 +19,8 @@ public class HintController : MonoBehaviour
   // Update is called once per frame
   void Update()
   {
+    if (GameManager.Manager.IsPaused) { return; }
+
     transform.position = startPos + new Vector2(player.transform.position.x - startPos.x, player.transform.position.y - startPos.y) * movement;
     var a = Mathf.Min(1, Mathf.Max(0, 1 - (Mathf.Abs(player.transform.position.x - transform.position.x) - 2) / 20));
     text.color = new Color(text.color.r, text.color.g, text.color.b, a);
