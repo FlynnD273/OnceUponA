@@ -21,30 +21,30 @@ public class VisibilityTrigger : MonoBehaviour
 
   public void StateChanged()
   {
-    var text = GetComponent<DynamicText>();
     if (Deactivated || Trigger == null)
     {
       return;
     }
-    if (text != null && !text.IsVisible)
-    {
-      foreach (var go in Visible)
-      {
-        go.IsVisible = false;
-      }
-      foreach (var go in Invisible)
-      {
-        go.IsVisible = false;
-      }
-      return;
-    }
+    /* var text = GetComponent<DynamicText>(); */
+    /* if (text != null && !text.IsVisible) */
+    /* { */
+    /*   foreach (var go in Visible) */
+    /*   { */
+    /*     go.SetVisibility(false, this); */
+    /*   } */
+    /*   foreach (var go in Invisible) */
+    /*   { */
+    /*     go.SetVisibility(false, this); */
+    /*   } */
+    /*   return; */
+    /* } */
     foreach (var go in Visible)
     {
-      go.IsVisible = !Trigger.State;
+      go.SetVisibility(!Trigger.State, this);
     }
     foreach (var go in Invisible)
     {
-      go.IsVisible = Trigger.State;
+      go.SetVisibility(Trigger.State, this);
     }
 
     if (Trigger.State)

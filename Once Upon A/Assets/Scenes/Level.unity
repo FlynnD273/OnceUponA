@@ -5645,7 +5645,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49d94e1304f22fa458eabc19db1bb446, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Deactivated: 1
+  Deactivated: 0
   Trigger: {fileID: 884684524}
   Visible: []
   Invisible:
@@ -13135,7 +13135,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.001953125, y: -87.39012}
+  m_Offset: {x: 0.001953125, y: -85.08334}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -13146,7 +13146,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 503.16406, y: 90.37155}
+  m_Size: {x: 503.16406, y: 94.98511}
   m_EdgeRadius: 0
 --- !u!61 &1860615793
 BoxCollider2D:
@@ -13180,7 +13180,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.9321289, y: 8.354584}
+  m_Offset: {x: 0.9321289, y: 6.8166656}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -13191,7 +13191,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 471.60645, y: 155.0885}
+  m_Size: {x: 471.60645, y: 152.01266}
   m_EdgeRadius: 0
 --- !u!61 &1860615794
 BoxCollider2D:
@@ -13599,7 +13599,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49d94e1304f22fa458eabc19db1bb446, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Deactivated: 1
+  Deactivated: 0
   Trigger: {fileID: 1902045109}
   Visible: []
   Invisible:
@@ -15865,20 +15865,16 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 4876110366207589545, guid: bdc2a225c22bcd7469fb8fd1b1bac1f1, type: 3}
-      propertyPath: XSpeed
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 4876110366207589545, guid: bdc2a225c22bcd7469fb8fd1b1bac1f1, type: 3}
       propertyPath: HeldWordControl
       value: 
       objectReference: {fileID: 361873519}
     - target: {fileID: 8476610300626374340, guid: bdc2a225c22bcd7469fb8fd1b1bac1f1, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 785.7
+      value: -40.5
       objectReference: {fileID: 0}
     - target: {fileID: 8476610300626374340, guid: bdc2a225c22bcd7469fb8fd1b1bac1f1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -11.6
+      value: 12.2
       objectReference: {fileID: 0}
     - target: {fileID: 8476610300626374340, guid: bdc2a225c22bcd7469fb8fd1b1bac1f1, type: 3}
       propertyPath: m_LocalPosition.z

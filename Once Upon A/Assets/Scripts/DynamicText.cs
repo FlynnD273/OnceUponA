@@ -13,16 +13,38 @@ public class DynamicText : MonoBehaviour
   public event Action VisibilityChanged;
   internal TextMesh textMesh;
   private bool savedIsVisible;
-  private bool isVisible;
+
+  private List<VisibilityTrigger> setInvisibleTriggers = new();
+  private object visibilityLock = new();
+  private bool isVisible = true;
   public bool IsVisible
   {
     get => isVisible;
-    set
+  }
+
+  public void SetVisibility(bool value, VisibilityTrigger source)
+  {
+    lock (visibilityLock)
     {
-      if (isVisible != value)
+      if (!value)
       {
-        isVisible = value;
-        UpdateVisibility();
+        if (!setInvisibleTriggers.Contains(source))
+        {
+          setInvisibleTriggers.Add(source);
+        }
+        isVisible = false;
+        UpdateVisibility(source);
+        return;
+      }
+      else if (setInvisibleTriggers.Contains(source))
+      {
+        setInvisibleTriggers.Remove(source);
+      }
+
+      if (setInvisibleTriggers.Count == 0 && value)
+      {
+        isVisible = true;
+        UpdateVisibility(source);
       }
     }
   }
@@ -64,7 +86,6 @@ public class DynamicText : MonoBehaviour
   {
     textMesh = GetComponent<TextMesh>();
     TargetPosition = transform.position;
-    IsVisible = true;
   }
 
   void FixedUpdate()
@@ -120,12 +141,12 @@ public class DynamicText : MonoBehaviour
     }
   }
 
-  private void UpdateVisibility()
+  private void UpdateVisibility(VisibilityTrigger source)
   {
     GetComponent<Renderer>().enabled = isVisible;
     foreach (var coll in GetComponents<Collider2D>())
     {
-      coll.enabled = isVisible;
+      coll.enabled = IsVisible;
     }
     foreach (var child in GetComponentsInChildren<DynamicText>())
     {
@@ -133,18 +154,14 @@ public class DynamicText : MonoBehaviour
       {
         continue;
       }
-      child.IsVisible = isVisible;
-    }
-    var vis = GetComponent<VisibilityTrigger>();
-    if (IsVisible && vis != null)
-    {
-      vis.StateChanged();
+      child.SetVisibility(IsVisible, source);
     }
     VisibilityChanged?.Invoke();
   }
 
   private void Reset()
   {
+    setInvisibleTriggers = new();
     /* IsVisible = savedIsVisible; */
   }
 
@@ -157,23 +174,5 @@ public class DynamicText : MonoBehaviour
   {
     GameManager.Manager.ResetOccurred -= Reset;
     GameManager.Manager.SaveStateOccurred -= SaveState;
-  }
-
-  public void SetIsVisibleQuiet(bool isVisible)
-  {
-    this.isVisible = isVisible;
-    GetComponent<Renderer>().enabled = isVisible;
-    foreach (var coll in GetComponents<Collider2D>())
-    {
-      coll.enabled = isVisible;
-    }
-    foreach (var child in GetComponentsInChildren<DynamicText>())
-    {
-      if (child.gameObject == this.gameObject)
-      {
-        continue;
-      }
-      child.IsVisible = isVisible;
-    }
   }
 }
