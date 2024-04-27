@@ -57,7 +57,7 @@ public class VisibilityTrigger : MonoBehaviour
           slot.IsSwappable = false;
         }
       }
-      GameManager.Manager.JustActivated();
+      GameManager.Manager?.JustActivated();
     }
   }
 }

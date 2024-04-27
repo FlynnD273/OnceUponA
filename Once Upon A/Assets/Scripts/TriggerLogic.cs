@@ -10,7 +10,7 @@ public class TriggerLogic : MonoBehaviour
   private bool didInit;
 
   public event Action StateChanged;
-  internal bool state;
+  internal bool state = true;
   public bool State
   {
     get
@@ -19,9 +19,12 @@ public class TriggerLogic : MonoBehaviour
     }
     internal set
     {
-      state = value;
-      DebugState = state;
-      StateChanged?.Invoke();
+      if (state != value)
+      {
+        state = value;
+        DebugState = state;
+        StateChanged?.Invoke();
+      }
     }
   }
 
