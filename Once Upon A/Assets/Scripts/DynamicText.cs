@@ -19,8 +19,11 @@ public class DynamicText : MonoBehaviour
     get => isVisible;
     set
     {
-      isVisible = value;
-      UpdateVisibility();
+      if (isVisible != value)
+      {
+        isVisible = value;
+        UpdateVisibility();
+      }
     }
   }
 
@@ -57,7 +60,7 @@ public class DynamicText : MonoBehaviour
     }
   }
 
-  void Awake()
+  void Awake() // DON'T FORGET TO COPY TO DANGER CONTROLLER
   {
     textMesh = GetComponent<TextMesh>();
     TargetPosition = transform.position;
@@ -132,17 +135,22 @@ public class DynamicText : MonoBehaviour
       }
       child.IsVisible = isVisible;
     }
+    var vis = GetComponent<VisibilityTrigger>();
+    if (IsVisible && vis != null)
+    {
+      vis.StateChanged();
+    }
     VisibilityChanged?.Invoke();
   }
 
   private void Reset()
   {
-    IsVisible = savedIsVisible;
+    /* IsVisible = savedIsVisible; */
   }
 
   private void SaveState()
   {
-    savedIsVisible = IsVisible;
+    /* savedIsVisible = IsVisible; */
   }
 
   void OnDestroy()

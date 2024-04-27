@@ -30,18 +30,27 @@ public class DangerController : DynamicText
   public Vector2 Direction;
   public float Power;
   public float LockTime = 0.5f;
-  private Collider2D trigger;
+  private BoxCollider2D trigger;
 
   public TriggerLogic DeactivateTrigger;
+
+  void Awake()
+  {
+    trigger = GetComponent<BoxCollider2D>();
+    textMesh = GetComponent<TextMesh>();
+    TargetPosition = transform.position;
+    IsVisible = true;
+  }
 
   void Start()
   {
     isDangerous = true;
-    trigger = GetComponent<Collider2D>();
     if (DeactivateTrigger != null)
     {
       DeactivateTrigger.StateChanged += () => IsDangerous = !DeactivateTrigger.State;
     }
+    trigger.offset = new Vector2(Width / 2, trigger.offset.y);
+    trigger.size = new Vector2(Width, trigger.size.y);
   }
 
   void OnTriggerEnter2D(Collider2D coll)

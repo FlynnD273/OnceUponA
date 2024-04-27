@@ -57,7 +57,7 @@ public class TextSpacingController : MonoBehaviour
         {
           allChildren.Add(CreateStaticText("null"));
         }
-        if (i > 0 && text[i - 1] != ' ')
+        if ((i > 0 && text[i - 1] != ' ') || (i >= placeholderString.Length && text.Substring(i - placeholderString.Length - 1, placeholderString.Length) != placeholderString))
         {
           extraWidth.Add(0);
         }

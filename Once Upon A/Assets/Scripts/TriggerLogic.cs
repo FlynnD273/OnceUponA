@@ -10,7 +10,7 @@ public class TriggerLogic : MonoBehaviour
   private bool didInit;
 
   public event Action StateChanged;
-  private bool state;
+  internal bool state;
   public bool State
   {
     get
@@ -38,7 +38,6 @@ public class TriggerLogic : MonoBehaviour
 
   public virtual void Init()
   {
-    State = true;
     State = false;
   }
 }

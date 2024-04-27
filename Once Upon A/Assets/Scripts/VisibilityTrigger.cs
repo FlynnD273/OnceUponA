@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class VisibilityTrigger : MonoBehaviour
@@ -8,9 +9,6 @@ public class VisibilityTrigger : MonoBehaviour
   public TriggerLogic Trigger;
   public DynamicText[] Visible;
   public DynamicText[] Invisible;
-
-  public DangerController[] Dangerous;
-  public DangerController[] Nondangerous;
 
   public void Start()
   {
@@ -23,8 +21,21 @@ public class VisibilityTrigger : MonoBehaviour
 
   public void StateChanged()
   {
-    if (Deactivated)
+    var text = GetComponent<DynamicText>();
+    if (Deactivated || Trigger == null)
     {
+      return;
+    }
+    if (text != null && !text.IsVisible)
+    {
+      foreach (var go in Visible)
+      {
+        go.IsVisible = false;
+      }
+      foreach (var go in Invisible)
+      {
+        go.IsVisible = false;
+      }
       return;
     }
     foreach (var go in Visible)
@@ -34,14 +45,6 @@ public class VisibilityTrigger : MonoBehaviour
     foreach (var go in Invisible)
     {
       go.IsVisible = Trigger.State;
-    }
-    foreach (var go in Dangerous)
-    {
-      go.IsDangerous = !Trigger.State;
-    }
-    foreach (var go in Nondangerous)
-    {
-      go.IsDangerous = Trigger.State;
     }
 
     if (Trigger.State)

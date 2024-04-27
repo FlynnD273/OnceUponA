@@ -52,6 +52,7 @@ public class GameManager : MonoBehaviour
   private bool justActivated;
 
   private bool save;
+  private bool reset;
 
   // Start is called before the first frame update
   void Awake()
@@ -63,7 +64,7 @@ public class GameManager : MonoBehaviour
 
   private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
   {
-    save = true;
+    SaveState();
   }
 
   // Update is called once per frame
@@ -81,7 +82,12 @@ public class GameManager : MonoBehaviour
     if (save)
     {
       save = false;
-      SaveState();
+      SaveStateOccurred?.Invoke();
+    }
+    if (reset)
+    {
+      reset = false;
+      ResetOccurred?.Invoke();
     }
     if (justSwapped && justActivated)
     {
@@ -95,12 +101,12 @@ public class GameManager : MonoBehaviour
 
   public void Reset()
   {
-    ResetOccurred?.Invoke();
+    reset = true;
   }
 
   public void SaveState()
   {
-    SaveStateOccurred?.Invoke();
+    save = true;
   }
 
   public void JustSwapped()
