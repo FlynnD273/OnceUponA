@@ -6,6 +6,8 @@ using static Utils.Constants;
 public class InteractHintController : MonoBehaviour
 {
   public float speed;
+  public float Duration;
+  private float startTime;
   private float movement = 0.25f;
   private GameObject player;
   private Vector2 startPos;
@@ -29,23 +31,38 @@ public class InteractHintController : MonoBehaviour
   {
     if (GameManager.Manager.IsPaused) { return; }
 
-    if (couldActivate && Input.GetButtonDown("Swap"))
+    if (!isActivated && couldActivate && Input.GetButtonDown("Swap"))
     {
       isActivated = !isActivated;
+      startTime = Time.time;
     }
 
-    transform.position = startPos + new Vector2(player.transform.position.x - startPos.x, player.transform.position.y - startPos.y) * movement;
 
     if (isActivated)
     {
       targetAlpha = Mathf.Min(1, Mathf.Max(0, 1 - (Mathf.Abs(player.transform.position.x - transform.position.x) - 2) / 20));
+
+      float time = Time.time;
+      if (time - startTime > Duration)
+      {
+        alpha = targetAlpha;
+        transform.position = startPos + new Vector2(player.transform.position.x - startPos.x, player.transform.position.y - startPos.y) * movement;
+      }
+      else
+      {
+        float i = (time - startTime) / Duration;
+        float t = Mathf.Pow(i, 3);
+        alpha = Mathf.Lerp(0, targetAlpha, t);
+
+        t = i < 0.5 ? 4 * i * i * i : 1 - Mathf.Pow(-2 * i + 2, 3) / 2;
+        transform.position = startPos + new Vector2(player.transform.position.x - startPos.x, player.transform.position.y - startPos.y) * movement * t;
+      }
     }
     else
     {
-      targetAlpha = 0;
+      alpha = 0;
     }
 
-    alpha = Mathf.Lerp(alpha, targetAlpha, speed);
 
     text.color = new Color(text.color.r, text.color.g, text.color.b, alpha);
     if (line != null)
