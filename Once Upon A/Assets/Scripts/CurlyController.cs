@@ -10,7 +10,8 @@ public class CurlyController : MonoBehaviour
   private float offset;
   public float Offset
   {
-    get => offset; set
+    get => offset; 
+    set
     {
       offset = value;
       trans.offsetMin = new Vector2(Offset, trans.offsetMin.y);
@@ -26,7 +27,7 @@ public class CurlyController : MonoBehaviour
   private GameObject twin;
 
 
-  void Start()
+  void Awake()
   {
     twin = new GameObject("Curly 2");
     var img = twin.AddComponent<Image>();
