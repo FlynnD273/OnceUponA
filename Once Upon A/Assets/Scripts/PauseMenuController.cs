@@ -25,7 +25,8 @@ public class PauseMenuController : MonoBehaviour
   private void OnPauseChanged()
   {
     canvas.gameObject.SetActive(GameManager.Manager.IsPaused);
-    if (GameManager.Manager.IsPaused) {
+    if (GameManager.Manager.IsPaused)
+    {
       curly.targetOffset = 0;
       curly.Offset = -20;
       scale.targetScale = 1;
@@ -41,6 +42,12 @@ public class PauseMenuController : MonoBehaviour
   public void LoadTitle()
   {
     GameManager.Manager.LoadTitle();
+  }
+
+  public void Restart()
+  {
+    UnPause();
+    GameManager.Manager.Reset();
   }
 
   void OnDestroy()
