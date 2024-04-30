@@ -3,12 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static Utils.Constants;
+using static Utils.Utils;
 
 public class HeldWordController : MonoBehaviour
 {
     public GameObject Target;
     public float Speed = 0.1f;
-    private Vector2 offset = new(0, 1.8f);
+    private Vector3 offset = new(0, 1.8f, 0);
 
     private TextMesh heldWordMesh;
     private Word heldWord;
@@ -57,6 +58,6 @@ public class HeldWordController : MonoBehaviour
 
     void FixedUpdate()
     {
-        transform.position = Vector2.Lerp(transform.position, (Vector2)Target.transform.position + offset, Speed);
+        transform.position = Anim(transform.position, Target.transform.position + offset, Speed);
     }
 }

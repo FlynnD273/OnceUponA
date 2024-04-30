@@ -7,6 +7,8 @@ namespace Utils
 {
   public static class Constants
   {
+    public static readonly float StandardAnim = 30;
+
     public enum Layers
     {
       Default = 0,
@@ -68,6 +70,27 @@ namespace Utils
 
   public static class Utils
   {
+    public static float Anim(float currValue, float targetValue, float duration)
+    {
+      float val = currValue + (targetValue - currValue) * (1 - Mathf.Exp(-duration * Time.unscaledDeltaTime));
+      if (Mathf.Abs(targetValue - val) < 0.001f)
+      {
+        return targetValue;
+      }
+      return val;
+    }
+
+    public static Vector3 Anim(Vector3 currValue, Vector3 targetValue, float duration)
+    {
+      Vector3 val = new Vector3(Anim(currValue.x, targetValue.x, duration), Anim(currValue.y, targetValue.y, duration), Anim(currValue.z, targetValue.z, duration));
+
+      if ((targetValue - val).magnitude < 0.001f)
+      {
+        return targetValue;
+      }
+      return val;
+    }
+
     public static Color FromHex(string hex)
     {
       if (hex.Length != 6) { throw new System.Exception($"String of length {hex.Length} is not valid! Must be of length 6."); }

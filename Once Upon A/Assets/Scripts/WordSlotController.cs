@@ -1,5 +1,7 @@
 using static Utils.Constants;
 using UnityEngine;
+using static Utils.Utils;
+using Utils;
 
 public class WordSlotController : TriggerLogic
 {
@@ -65,6 +67,8 @@ public class WordSlotController : TriggerLogic
   private LineRenderer line;
 
   private AudioSource audioSource;
+  private float targetLineLength;
+  private float lineLength;
 
   private Word savedWord;
   private bool savedIsSwappable;
@@ -82,6 +86,7 @@ public class WordSlotController : TriggerLogic
     line.material = new Material(Shader.Find("Legacy Shaders/Particles/Alpha Blended Premultiply"));
     line.startWidth = 0.15f;
     line.endWidth = line.startWidth;
+    line.SetPositions(new Vector3[] { new Vector3(0, -25), new Vector3(0, -25) });
     line.numCapVertices = 5;
     line.positionCount = 2;
 
@@ -100,7 +105,7 @@ public class WordSlotController : TriggerLogic
     line.enabled = true;
     line.startColor = WordToColor[CurrentWord?.Type ?? WordType.White];
     line.endColor = line.startColor;
-    line.SetPositions(new Vector3[] { new Vector3(0, -25), new Vector3(text.Width, -25) });
+    targetLineLength = text.Width;
 
     trigger.size = new Vector2(text.Width, trigger.size.y);
     trigger.offset = new Vector2(text.Width / 2, trigger.offset.y);
@@ -121,6 +126,12 @@ public class WordSlotController : TriggerLogic
     GameManager.Manager.ResetOccurred += Reset;
     GameManager.Manager.SaveStateOccurred += SaveState;
     IsSwappable = IsSwappableAtStart;
+  }
+
+  internal override void InheritedUpdate()
+  {
+    lineLength = Anim(lineLength, targetLineLength, Constants.StandardAnim);
+    line.SetPosition(1, new Vector2(lineLength, -25));
   }
 
   private void Reset()

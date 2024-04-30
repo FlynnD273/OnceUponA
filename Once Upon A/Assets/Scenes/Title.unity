@@ -279,7 +279,7 @@ GameObject:
   - component: {fileID: 1911149432}
   - component: {fileID: 1911149431}
   - component: {fileID: 1911149430}
-  - component: {fileID: 1911149429}
+  - component: {fileID: 1911149433}
   m_Layer: 0
   m_Name: StartButton
   m_TagString: Untagged
@@ -287,18 +287,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1911149429
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1911149428}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff0a002e78f74d74ca0dab5bf2ce2d07, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!61 &1911149430
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -411,6 +399,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1911149433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1911149428}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af7cded05926ec34e9ff420bfeeaa4fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2076887706
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -489,7 +489,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3826338888178134152, guid: 03f559e17fc9fa941a8ebf9e7483b161, type: 3}
-    - {fileID: 8057862032496372762, guid: 03f559e17fc9fa941a8ebf9e7483b161, type: 3}
     m_RemovedGameObjects:
     - {fileID: 170939944070502613, guid: 03f559e17fc9fa941a8ebf9e7483b161, type: 3}
     m_AddedGameObjects: []

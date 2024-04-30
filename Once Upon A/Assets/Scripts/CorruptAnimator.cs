@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
+using Utils;
 using static Utils.Constants;
+using static Utils.Utils;
 
 public class CorruptAnimator : DynamicText
 {
@@ -51,14 +53,7 @@ public class CorruptAnimator : DynamicText
       offset = new Vector3(x, y, 0) / 0.05f * transform.localScale.x;
     }
 
-    if ((lerpedPos - TargetPosition).sqrMagnitude < 0.1f)
-    {
-      lerpedPos = TargetPosition;
-    }
-    else
-    {
-      lerpedPos = Vector3.Lerp(lerpedPos, TargetPosition, 0.5f);
-    }
+    lerpedPos = Anim(lerpedPos, TargetPosition, Constants.StandardAnim);
 
     transform.localPosition = lerpedPos + offset;
   }

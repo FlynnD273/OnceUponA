@@ -39,12 +39,13 @@ public class GameManager : MonoBehaviour
       {
         Time.timeScale = 1;
       }
+      PauseChanged?.Invoke();
     }
   }
 
+  public event Action PauseChanged;
   public event Action ResetOccurred;
   public event Action SaveStateOccurred;
-
 
   private AudioSource audioSource;
 
@@ -54,7 +55,6 @@ public class GameManager : MonoBehaviour
   private bool save;
   private bool reset;
 
-  // Start is called before the first frame update
   void Awake()
   {
     Manager = this;
@@ -67,7 +67,6 @@ public class GameManager : MonoBehaviour
     SaveState();
   }
 
-  // Update is called once per frame
   void Update()
   {
     if (!IsPaused && Input.GetButtonDown("Cancel"))
@@ -102,12 +101,29 @@ public class GameManager : MonoBehaviour
     }
     if (justSwapped && justActivated)
     {
-      audioSource.clip = GameManager.Manager.PageTurnClips[Random.Range(0, PageTurnClips.Length)];
-      audioSource.Play();
+      PlayTurnSound();
       SaveState();
     }
     justSwapped = false;
     justActivated = false;
+  }
+
+  public void PlayTurnSound()
+  {
+    audioSource.clip = GameManager.Manager.PageTurnClips[Random.Range(0, PageTurnClips.Length)];
+    audioSource.Play();
+  }
+
+  public void LoadLevel() {
+    IsPaused = false;
+    PlayTurnSound();
+    SceneManager.LoadScene(1);
+  }
+
+  public void LoadTitle() {
+    IsPaused = false;
+    PlayTurnSound();
+    SceneManager.LoadScene(0);
   }
 
   public void Reset()

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using Utils;
+using static Utils.Utils;
 
 public class DynamicText : MonoBehaviour
 {
@@ -92,14 +93,7 @@ public class DynamicText : MonoBehaviour
   {
     if (GameManager.Manager.IsPaused) { return; }
 
-    if ((transform.position - TargetPosition).sqrMagnitude < 0.1f)
-    {
-      transform.localPosition = TargetPosition;
-    }
-    else
-    {
-      transform.localPosition = Vector3.Lerp(transform.localPosition, TargetPosition, 0.5f);
-    }
+    transform.localPosition = Anim(transform.localPosition, TargetPosition, Constants.StandardAnim);
   }
 
   public float Width
