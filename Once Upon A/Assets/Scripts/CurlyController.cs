@@ -46,6 +46,6 @@ public class CurlyController : MonoBehaviour
 
   void Update()
   {
-    Offset = Anim(Offset, targetOffset, 10);
+    Offset = ExpDamp(Offset, targetOffset, 10);
   }
 }

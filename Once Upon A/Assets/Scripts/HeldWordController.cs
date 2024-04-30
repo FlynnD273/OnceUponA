@@ -58,6 +58,6 @@ public class HeldWordController : MonoBehaviour
 
     void FixedUpdate()
     {
-        transform.position = Anim(transform.position, Target.transform.position + offset, Speed);
+        transform.position = ExpDamp(transform.position, Target.transform.position + offset, Speed);
     }
 }

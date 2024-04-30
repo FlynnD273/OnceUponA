@@ -37,7 +37,7 @@ public class CameraController : MonoBehaviour
       targetSize = normalSize;
     }
 
-    cam.orthographicSize = Anim(cam.orthographicSize, targetSize, ZoomSpeed);
+    cam.orthographicSize = ExpDamp(cam.orthographicSize, targetSize, ZoomSpeed);
 
     /* if (GameManager.Manager.IsPaused) { return; } */
   }
@@ -65,7 +65,7 @@ public class CameraController : MonoBehaviour
       y = Target.transform.position.y + VertThreshold;
     }
 
-    Vector2 newPos = Anim(transform.position, new Vector3(x, y), Speed);
+    Vector2 newPos = ExpDamp(transform.position, new Vector3(x, y), Speed);
     transform.position = new Vector3(newPos.x, newPos.y, -100);
   }
 }

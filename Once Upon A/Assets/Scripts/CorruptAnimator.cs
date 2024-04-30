@@ -53,7 +53,7 @@ public class CorruptAnimator : DynamicText
       offset = new Vector3(x, y, 0) / 0.05f * transform.localScale.x;
     }
 
-    lerpedPos = Anim(lerpedPos, TargetPosition, Constants.StandardAnim);
+    lerpedPos = ExpDamp(lerpedPos, TargetPosition, Constants.StandardAnim);
 
     transform.localPosition = lerpedPos + offset;
   }

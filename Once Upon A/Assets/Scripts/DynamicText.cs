@@ -93,7 +93,7 @@ public class DynamicText : MonoBehaviour
   {
     if (GameManager.Manager.IsPaused) { return; }
 
-    transform.localPosition = Anim(transform.localPosition, TargetPosition, Constants.StandardAnim);
+    transform.localPosition = ExpDamp(transform.localPosition, TargetPosition, Constants.StandardAnim);
   }
 
   public float Width

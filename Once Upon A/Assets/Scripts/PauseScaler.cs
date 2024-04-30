@@ -21,6 +21,6 @@ public class PauseScaler : MonoBehaviour
 
   void Update()
   {
-    Scale = Anim(Scale, targetScale, 10);
+    Scale = ExpDamp(Scale, targetScale, 10);
   }
 }

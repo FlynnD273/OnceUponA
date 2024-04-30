@@ -70,7 +70,14 @@ namespace Utils
 
   public static class Utils
   {
-    public static float Anim(float currValue, float targetValue, float duration)
+    /// <summary>
+    /// Animation curve for exponential smoothing
+    /// </summary>
+    /// <param name="currValue">The current value</param>
+    /// <param name="targetValue">The target value</param>
+    /// <param name="duration">The speed at which the current value approaches the target value</param>
+    /// <returns>The new current value</returns>
+    public static float ExpDamp(float currValue, float targetValue, float duration)
     {
       float val = currValue + (targetValue - currValue) * (1 - Mathf.Exp(-duration * Time.unscaledDeltaTime));
       if (Mathf.Abs(targetValue - val) < 0.001f)
@@ -80,9 +87,9 @@ namespace Utils
       return val;
     }
 
-    public static Vector3 Anim(Vector3 currValue, Vector3 targetValue, float duration)
+    public static Vector3 ExpDamp(Vector3 currValue, Vector3 targetValue, float duration)
     {
-      Vector3 val = new Vector3(Anim(currValue.x, targetValue.x, duration), Anim(currValue.y, targetValue.y, duration), Anim(currValue.z, targetValue.z, duration));
+      Vector3 val = new Vector3(ExpDamp(currValue.x, targetValue.x, duration), ExpDamp(currValue.y, targetValue.y, duration), ExpDamp(currValue.z, targetValue.z, duration));
 
       if ((targetValue - val).magnitude < 0.001f)
       {

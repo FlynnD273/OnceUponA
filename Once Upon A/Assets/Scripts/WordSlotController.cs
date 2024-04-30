@@ -130,7 +130,7 @@ public class WordSlotController : TriggerLogic
 
   internal override void InheritedUpdate()
   {
-    lineLength = Anim(lineLength, targetLineLength, Constants.StandardAnim);
+    lineLength = ExpDamp(lineLength, targetLineLength, Constants.StandardAnim);
     line.SetPosition(1, new Vector2(lineLength, -25));
   }
 
