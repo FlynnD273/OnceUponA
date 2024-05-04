@@ -28,10 +28,8 @@ public class PauseMenuController : MonoBehaviour
     canvas.gameObject.SetActive(GameManager.Manager.IsPaused);
     if (GameManager.Manager.IsPaused)
     {
-      curly.targetOffset = 0;
-      curly.Offset = -20;
-      scale.targetScale = 1;
-      scale.Scale = 1.1f;
+      curly.Offset.Value = -20;
+      scale.Scale.Value = 1.1f;
     }
   }
 

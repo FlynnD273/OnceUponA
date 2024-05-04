@@ -16,13 +16,11 @@ public class CorruptAnimator : DynamicText
   public TriggerLogic Trigger;
 
   private string corruptWord;
-  private Vector3 lerpedPos;
   private float startTime;
   private bool glitch;
 
   void Start()
   {
-    lerpedPos = transform.localPosition;
     startTime = Time.time;
     corruptWord = textMesh.text;
 
@@ -53,9 +51,9 @@ public class CorruptAnimator : DynamicText
       offset = new Vector3(x, y, 0) / 0.05f * transform.localScale.x;
     }
 
-    lerpedPos = ExpDamp(lerpedPos, TargetPosition, Constants.StandardAnim);
+    Position.Next(Constants.StandardAnim, Time.fixedDeltaTime);
 
-    transform.localPosition = lerpedPos + offset;
+    transform.localPosition = Position.Value + offset;
   }
 
   private void Switch()
