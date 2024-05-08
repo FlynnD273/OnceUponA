@@ -7,57 +7,65 @@ using static Utils.Utils;
 
 public class HeldWordController : MonoBehaviour
 {
-    public GameObject Target;
-    public float Speed = 0.1f;
-    private Vector3 offset = new(0, 1.8f, 0);
+  public GameObject Target;
+  public float Speed = 0.1f;
+  private Vector3 offset = new(0, 1.8f, 0);
+  private ExpDampVec3 position;
 
-    private TextMesh heldWordMesh;
-    private Word heldWord;
-    public Word HeldWord
+  private TextMesh heldWordMesh;
+  private Word heldWord;
+  public Word HeldWord
+  {
+    get
     {
-        get
-        {
-            return heldWord;
-        }
-        set
-        {
-            heldWord = value;
-            if (value == null)
-            {
-                heldWordMesh.text = "";
-            }
-            else
-            {
-                heldWordMesh.text = value.Text;
-                heldWordMesh.color = WordToColor[value.Type];
-                var xOffset = 1f * Mathf.Sign(Target.transform.localScale.x);
-                transform.position = Target.transform.position + new Vector3(xOffset, -1);
-            }
-        }
+      return heldWord;
     }
-
-    private Word savedWord;
-
-    void Start()
+    set
     {
-        heldWordMesh = GetComponent<TextMesh>();
-        transform.position = Target.transform.position;
-        GameManager.Manager.ResetOccurred += Reset;
-        GameManager.Manager.SaveStateOccurred += SaveState;
+      heldWord = value;
+      if (value == null)
+      {
+        heldWordMesh.text = "";
+      }
+      else
+      {
+        heldWordMesh.text = value.Text;
+        heldWordMesh.color = WordToColor[value.Type];
+        var xOffset = 1f * Mathf.Sign(Target.transform.localScale.x);
+        position.Value = Target.transform.position + new Vector3(xOffset, -1);
+      }
     }
+  }
 
-    private void Reset()
-    {
-        HeldWord = savedWord;
-    }
+  private Word savedWord;
 
-    private void SaveState()
-    {
-        savedWord = HeldWord;
-    }
+  void Awake()
+  {
+    heldWordMesh = GetComponent<TextMesh>();
+    position = new(Vector3.zero, Vector3.zero, () => transform.position = position.Value);
+  }
 
-    void FixedUpdate()
-    {
-        transform.position = ExpDamp(transform.position, Target.transform.position + offset, Speed);
-    }
+  void Start()
+  {
+    position.TargetValue = Target.transform.position + offset;
+    position.Value = Target.transform.position + offset;
+    GameManager.Manager.ResetOccurred += Reset;
+    GameManager.Manager.SaveStateOccurred += SaveState;
+  }
+
+  private void Reset()
+  {
+    HeldWord = savedWord;
+  }
+
+  private void SaveState()
+  {
+    savedWord = HeldWord;
+  }
+
+  void FixedUpdate()
+  {
+    position.TargetValue = Target.transform.position + offset;
+    position.Next(Speed, Time.fixedDeltaTime);
+  }
 }

@@ -15,29 +15,36 @@ public class CameraController : MonoBehaviour
   public float ZoomSpeed = 0.5f;
 
   private Camera cam;
-  private float targetSize;
   private float normalSize;
+  private ExpDamp zoom;
+  private ExpDampVec3 position;
 
-  // Start is called before the first frame update
-  void Start()
+  void Awake()
   {
-    transform.position = Target.transform.position;
     cam = GetComponent<Camera>();
     normalSize = cam.orthographicSize;
+    zoom = new(normalSize, normalSize, () => cam.orthographicSize = zoom?.Value ?? 1);
+    position = new(Vector3.zero, Vector3.zero, () => transform.position = position?.Value ?? Vector3.zero);
+  }
+
+  void Start()
+  {
+    position.TargetValue = Target.transform.position;
+    position.Value = Target.transform.position;
   }
 
   void Update()
   {
     if (GameManager.Manager.IsPaused)
     {
-      targetSize = normalSize * 1.1f;
+      zoom.TargetValue = normalSize * 1.1f;
     }
     else
     {
-      targetSize = normalSize;
+      zoom.TargetValue = normalSize;
     }
 
-    cam.orthographicSize = ExpDamp(cam.orthographicSize, targetSize, ZoomSpeed);
+    zoom.Next(ZoomSpeed, Time.unscaledDeltaTime);
 
     /* if (GameManager.Manager.IsPaused) { return; } */
   }
@@ -65,7 +72,7 @@ public class CameraController : MonoBehaviour
       y = Target.transform.position.y + VertThreshold;
     }
 
-    Vector2 newPos = ExpDamp(transform.position, new Vector3(x, y), Speed);
-    transform.position = new Vector3(newPos.x, newPos.y, -100);
+    position.TargetValue = new Vector3(x, y, -100);
+    position.Next(Speed, Time.fixedDeltaTime);
   }
 }

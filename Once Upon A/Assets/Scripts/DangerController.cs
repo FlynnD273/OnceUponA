@@ -38,7 +38,7 @@ public class DangerController : DynamicText
   {
     trigger = GetComponent<BoxCollider2D>();
     textMesh = GetComponent<TextMesh>();
-    TargetPosition = transform.position;
+    Position = new(transform.position, transform.position, () => transform.position = Position.Value);
   }
 
   void Start()

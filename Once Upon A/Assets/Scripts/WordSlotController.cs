@@ -67,8 +67,7 @@ public class WordSlotController : TriggerLogic
   private LineRenderer line;
 
   private AudioSource audioSource;
-  private float targetLineLength;
-  private float lineLength;
+  private ExpDamp lineLength = new();
 
   private Word savedWord;
   private bool savedIsSwappable;
@@ -105,7 +104,7 @@ public class WordSlotController : TriggerLogic
     line.enabled = true;
     line.startColor = WordToColor[CurrentWord?.Type ?? WordType.White];
     line.endColor = line.startColor;
-    targetLineLength = text.Width;
+    lineLength.TargetValue = text.Width;
 
     trigger.size = new Vector2(text.Width, trigger.size.y);
     trigger.offset = new Vector2(text.Width / 2, trigger.offset.y);
@@ -130,8 +129,7 @@ public class WordSlotController : TriggerLogic
 
   internal override void InheritedUpdate()
   {
-    lineLength = ExpDamp(lineLength, targetLineLength, Constants.StandardAnim);
-    line.SetPosition(1, new Vector2(lineLength, -25));
+    line.SetPosition(1, new Vector2(lineLength.Next(Constants.StandardAnim, Time.deltaTime), -25));
   }
 
   private void Reset()

@@ -9,7 +9,6 @@ using static Utils.Utils;
 
 public class DynamicText : MonoBehaviour
 {
-  public Vector3 TargetPosition;
   public event Action TextChanged;
   public event Action VisibilityChanged;
   internal TextMesh textMesh;
@@ -83,17 +82,19 @@ public class DynamicText : MonoBehaviour
     }
   }
 
+  public ExpDampVec3 Position = new();
+
   void Awake() // DON'T FORGET TO COPY TO DANGER CONTROLLER
   {
     textMesh = GetComponent<TextMesh>();
-    TargetPosition = transform.position;
+    Position = new(transform.position, transform.position, () => transform.position = Position.Value);
   }
 
   void FixedUpdate()
   {
     if (GameManager.Manager.IsPaused) { return; }
 
-    transform.localPosition = ExpDamp(transform.localPosition, TargetPosition, Constants.StandardAnim);
+    transform.localPosition = Position.Next(Constants.StandardAnim, Time.fixedDeltaTime);
   }
 
   public float Width

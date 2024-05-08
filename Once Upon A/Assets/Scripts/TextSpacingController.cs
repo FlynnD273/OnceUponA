@@ -31,7 +31,7 @@ public class TextSpacingController : MonoBehaviour
   // Start is called before the first frame update
   void Start()
   {
-    GetComponent<DynamicText>().TargetPosition = transform.position;
+    GetComponent<DynamicText>().Position.TargetValue = transform.position;
     coll = GetComponent<BoxCollider2D>();
     TextMesh textMesh = GetComponent<TextMesh>();
     allChildren = new();
@@ -108,7 +108,7 @@ public class TextSpacingController : MonoBehaviour
   {
     foreach (var child in allChildren)
     {
-      child.transform.localPosition = child.TargetPosition;
+      child.Position.Value = child.Position.TargetValue;
     }
   }
 
@@ -125,7 +125,7 @@ public class TextSpacingController : MonoBehaviour
     {
       DynamicText child = allChildren[i];
       float extraSpace = extraWidth[i];
-      child.TargetPosition = new Vector3(spacing, 0, 1);
+      child.Position.TargetValue = new Vector3(spacing, 0, 1);
       child.transform.localScale = new Vector3(1, 1, 1);
       child.transform.rotation = transform.rotation;
       if (child.Width == 0)

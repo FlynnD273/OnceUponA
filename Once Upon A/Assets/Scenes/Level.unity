@@ -15472,6 +15472,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pause menu
       objectReference: {fileID: 0}
+    - target: {fileID: 5389068424883082921, guid: cd8d4e10182d89687ba4a4e666b2695d, type: 3}
+      propertyPath: m_SortingOrder
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6839970390049934356, guid: cd8d4e10182d89687ba4a4e666b2695d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -40
+      objectReference: {fileID: 0}
+    - target: {fileID: 7090865423475653155, guid: cd8d4e10182d89687ba4a4e666b2695d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7865309341808221677, guid: cd8d4e10182d89687ba4a4e666b2695d, type: 3}
       propertyPath: m_LocalPosition.x
       value: -29.283987
@@ -15511,6 +15523,14 @@ PrefabInstance:
     - target: {fileID: 7865309341808221677, guid: cd8d4e10182d89687ba4a4e666b2695d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8702740978044377658, guid: cd8d4e10182d89687ba4a4e666b2695d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -80
+      objectReference: {fileID: 0}
+    - target: {fileID: 9045865474799087574, guid: cd8d4e10182d89687ba4a4e666b2695d, type: 3}
+      propertyPath: m_UiScaleMode
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

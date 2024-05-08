@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PauseMenuController : MonoBehaviour
 {
@@ -27,10 +28,8 @@ public class PauseMenuController : MonoBehaviour
     canvas.gameObject.SetActive(GameManager.Manager.IsPaused);
     if (GameManager.Manager.IsPaused)
     {
-      curly.targetOffset = 0;
-      curly.Offset = -20;
-      scale.targetScale = 1;
-      scale.Scale = 1.2f;
+      curly.Offset.Value = -20;
+      scale.Scale.Value = 1.1f;
     }
   }
 
