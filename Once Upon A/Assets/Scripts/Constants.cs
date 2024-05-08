@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using UnityEngine;
 
 namespace Utils
@@ -27,21 +28,18 @@ namespace Utils
       White,
       Corrupt,
     }
-    public static Dictionary<WordType, Color> WordToColor;
 
-
-    static Constants()
+    public static readonly ReadOnlyDictionary<WordType, Color> WordToColor = new(new Dictionary<WordType, Color>()
     {
-      WordToColor = new();
-      WordToColor.Add(WordType.Normal, Utils.FromHex("558dfc"));
-      WordToColor.Add(WordType.Bouncy, Utils.FromHex("66fc55"));
-      WordToColor.Add(WordType.Danger, Utils.FromHex("fc5577"));
-      WordToColor.Add(WordType.Corrupt, Utils.FromHex("fc53f1"));
-      WordToColor.Add(WordType.White, Color.white);
-    }
+      [WordType.Normal] = Utils.FromHex("558dfc"),
+      [WordType.Bouncy] = Utils.FromHex("66fc55"),
+      [WordType.Danger] = Utils.FromHex("fc5577"),
+      [WordType.Corrupt] = Utils.FromHex("fc53f1"),
+      [WordType.White] = Color.white,
+    });
 
 
-    public static FontWidth CharWidths = new();
+    public static readonly FontWidth CharWidths = new();
     public class FontWidth
     {
       public Dictionary<char, float> fontAdvances = new();
@@ -57,7 +55,7 @@ namespace Utils
           }
           if (font == null)
           {
-            font = Resources.Load("EduNSWACTFoundation-VariableFont_wght") as Font;
+            font = Resources.Load<Font>("EduNSWACTFoundation-VariableFont_wght");
           }
           font.GetCharacterInfo(c, out CharacterInfo info, 500);
           width = info.advance / 10f;
