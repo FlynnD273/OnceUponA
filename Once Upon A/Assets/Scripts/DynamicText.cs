@@ -82,7 +82,7 @@ public class DynamicText : MonoBehaviour
     }
   }
 
-  public ExpDampVec3 Position = new();
+  public ExpDampVec3 Position;
 
   void Awake() // DON'T FORGET TO COPY TO DANGER CONTROLLER
   {
@@ -156,7 +156,10 @@ public class DynamicText : MonoBehaviour
 
   private void Reset()
   {
-    setInvisibleTriggers = new();
+    /* lock (visibilityLock) */
+    /* { */
+    /*   setInvisibleTriggers = new(); */
+    /* } */
     /* IsVisible = savedIsVisible; */
   }
 

@@ -5,11 +5,12 @@ using static Utils.Utils;
 
 public class PauseScaler : MonoBehaviour
 {
+  public float StartSize = 1;
   public ExpDamp Scale;
 
   void Awake()
   {
-    Scale = new(1, 1, () => transform.localScale = Vector3.one * Scale.Value);
+    Scale = new(StartSize, 1, () => transform.localScale = Vector3.one * Scale.Value);
   }
 
   void Update()

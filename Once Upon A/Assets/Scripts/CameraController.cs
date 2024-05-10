@@ -23,7 +23,7 @@ public class CameraController : MonoBehaviour
   {
     cam = GetComponent<Camera>();
     normalSize = cam.orthographicSize;
-    zoom = new(normalSize, normalSize, () => cam.orthographicSize = zoom?.Value ?? 1);
+    zoom = new(normalSize, normalSize, () => { cam.orthographicSize = zoom?.Value ?? 1; transform.localScale = Vector3.one * cam.orthographicSize; });
     position = new(Vector3.zero, Vector3.zero, () => transform.position = position?.Value ?? Vector3.zero);
   }
 

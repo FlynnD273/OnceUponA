@@ -57,13 +57,17 @@ public class TextSpacingController : MonoBehaviour
         {
           allChildren.Add(CreateStaticText("null"));
         }
-        if ((i > 0 && text[i - 1] != ' ') || (i >= placeholderString.Length && text.Substring(i - placeholderString.Length - 1, placeholderString.Length) != placeholderString))
+
+        int endPlaceholder = i + placeholderString.Length;
+        bool leftSpace = i - 1 <= 0 || text[i - 1] == ' ';
+        bool rightSpace = endPlaceholder >= text.Length || text[endPlaceholder] == ' ';
+        if (leftSpace && rightSpace)
         {
-          extraWidth.Add(0);
+          extraWidth.Add(-Constants.CharWidths[' ']);
         }
         else
         {
-          extraWidth.Add(-Constants.CharWidths[' ']);
+          extraWidth.Add(0);
         }
         dynamicIndex++;
         startIndex = i + placeholderString.Length;
@@ -109,6 +113,7 @@ public class TextSpacingController : MonoBehaviour
     foreach (var child in allChildren)
     {
       child.Position.Value = child.Position.TargetValue;
+      child.transform.localPosition = child.Position.Value;
     }
   }
 

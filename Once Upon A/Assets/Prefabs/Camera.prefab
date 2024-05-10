@@ -79,7 +79,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 77.759995, y: 25.932657}
+  m_Size: {x: 32.4, y: 10.8}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -97,8 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47654d13a89ff3a4b90627dcbc61b8f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minX: -100
-  maxX: 2100
+  Parallax: 0
 --- !u!1 &8785215455473203736
 GameObject:
   m_ObjectHideFlags: 0
@@ -209,3 +208,4 @@ MonoBehaviour:
   HoriThreshold: 2
   VertThreshold: 1
   Speed: 10
+  ZoomSpeed: 0.5

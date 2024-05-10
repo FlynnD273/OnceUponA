@@ -63,6 +63,12 @@ public class HeldWordController : MonoBehaviour
     savedWord = HeldWord;
   }
 
+  void OnDestroy()
+  {
+    GameManager.Manager.ResetOccurred -= Reset;
+    GameManager.Manager.SaveStateOccurred -= SaveState;
+  }
+
   void FixedUpdate()
   {
     position.TargetValue = Target.transform.position + offset;
