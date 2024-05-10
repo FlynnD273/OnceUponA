@@ -7,6 +7,22 @@
       "dependencies": {},
       "hash": "12574c32f658fa23c194357141abc3fc157ea362"
     },
+    "com.github.superunitybuild.buildactions": {
+      "version": "https://github.com/superunitybuild/buildactions.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.github.superunitybuild.buildtool": "7.0.0"
+      },
+      "hash": "afb7a828f9cfb733eeba5e02bb4c7d4df78d6448"
+    },
+    "com.github.superunitybuild.buildtool": {
+      "version": "https://github.com/superunitybuild/buildtool.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "99248ede408eb8bba9e328e1fb54de40e4f66498"
+    },
     "com.unity.2d.animation": {
       "version": "9.1.0",
       "depth": 1,
