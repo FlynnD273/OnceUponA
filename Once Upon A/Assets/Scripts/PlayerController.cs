@@ -50,6 +50,8 @@ public class PlayerController : MonoBehaviour
 
   private bool didSave;
 
+  private InputSystem Input;
+
   void Awake()
   {
     rb = GetComponent<Rigidbody2D>();
@@ -67,6 +69,7 @@ public class PlayerController : MonoBehaviour
   {
     GameManager.Manager.ResetOccurred += Reset;
     GameManager.Manager.SaveStateOccurred += SaveState;
+    Input = GameManager.Manager.Input;
   }
 
   private void SaveState()
@@ -129,7 +132,7 @@ public class PlayerController : MonoBehaviour
     if (!lockControls.IsRunning)
     {
       var slot = GetCurrentSlot();
-      if (isGrounded && slot != null && Input.GetButtonDown("Swap"))
+      if (isGrounded && slot != null && Input.Actions.Swap.WasPressedThisFrame())
       {
         HeldWordControl.HeldWord = slot.Swap(HeldWordControl.HeldWord);
         GameManager.Manager.JustSwapped();
@@ -162,9 +165,10 @@ public class PlayerController : MonoBehaviour
     }
 
     float x = 0, y = rb.velocity.y;
-    if (Input.GetButton("Horizontal"))
+    float hor = Input.Actions.Move.ReadValue<Vector2>().x;
+    if (hor != 0)
     {
-      x = Input.GetAxis("Horizontal") * XSpeed * Time.fixedDeltaTime * 100;
+      x = hor * XSpeed * Time.fixedDeltaTime * 100;
     }
     else
     {
@@ -180,7 +184,7 @@ public class PlayerController : MonoBehaviour
       coyote.Restart();
     }
 
-    if (!Input.GetButton("Jump"))
+    if (!Input.Actions.Jump.IsPressed())
     {
       jumpReleased = true;
     }
@@ -191,7 +195,7 @@ public class PlayerController : MonoBehaviour
       startJump.Stop();
     }
 
-    if ((isGrounded || (coyote.IsRunning && coyote.Elapsed < coyoteTimeSpan)) && jumpReleased && Input.GetButton("Jump"))
+    if ((isGrounded || (coyote.IsRunning && coyote.Elapsed < coyoteTimeSpan)) && jumpReleased && Input.Actions.Jump.IsPressed())
     {
       if (isBouncy)
       {

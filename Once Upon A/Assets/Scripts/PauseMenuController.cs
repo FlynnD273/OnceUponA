@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class PauseMenuController : MonoBehaviour
 {
+  public Selectable DefaultFocus;
   private Canvas canvas;
   private CurlyController curly;
   private PauseScaler scale;
@@ -28,6 +29,7 @@ public class PauseMenuController : MonoBehaviour
     canvas.gameObject.SetActive(GameManager.Manager.IsPaused);
     if (GameManager.Manager.IsPaused)
     {
+      DefaultFocus.Select();
       curly.Offset.Value = -20;
       scale.Scale.Value = 1.1f;
     }
@@ -35,7 +37,9 @@ public class PauseMenuController : MonoBehaviour
 
   public void UnPause()
   {
+    GameManager.Manager.Input.Disable();
     GameManager.Manager.IsPaused = false;
+    GameManager.Manager.Input.Enable();
   }
 
   public void LoadTitle()

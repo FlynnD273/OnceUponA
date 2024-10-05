@@ -43,6 +43,8 @@ public class GameManager : MonoBehaviour
     }
   }
 
+  public InputSystem Input { get; private set; }
+
   public event Action PauseChanged;
   public event Action ResetOccurred;
   public event Action SaveStateOccurred;
@@ -60,6 +62,9 @@ public class GameManager : MonoBehaviour
     Manager = this;
     audioSource = GetComponent<AudioSource>();
     SceneManager.sceneLoaded += OnSceneLoaded;
+
+    Input = new();
+    Input.Enable();
   }
 
   private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
@@ -69,19 +74,19 @@ public class GameManager : MonoBehaviour
 
   void Update()
   {
-    if (!IsPaused && Input.GetButtonDown("Cancel"))
+    if (!IsPaused && Input.Actions.Cancel.WasPressedThisFrame())
     {
       IsPaused = true;
     }
 
     // PLACEHOLDER the pause menu UI will handle unpausing when completed
-    else if (IsPaused && Input.GetButtonDown("Cancel"))
+    else if (IsPaused && Input.Actions.Cancel.WasPressedThisFrame())
     {
       IsPaused = false;
     }
 
     if (IsPaused) { return; }
-    if (Input.GetButtonDown("Reset"))
+    if (Input.Actions.Reset.WasPressedThisFrame())
     {
       Reset();
     }
@@ -114,13 +119,15 @@ public class GameManager : MonoBehaviour
     audioSource.Play();
   }
 
-  public void LoadLevel() {
+  public void LoadLevel()
+  {
     IsPaused = false;
     PlayTurnSound();
     SceneManager.LoadScene(1);
   }
 
-  public void LoadTitle() {
+  public void LoadTitle()
+  {
     IsPaused = false;
     PlayTurnSound();
     SceneManager.LoadScene(0);
