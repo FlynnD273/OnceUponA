@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using TMPro;
 using UnityEngine;
 using Utils;
 using static Utils.Utils;
@@ -11,7 +12,7 @@ public class DynamicText : MonoBehaviour
 {
     public event Action TextChanged;
     public event Action VisibilityChanged;
-    internal TextMesh textMesh;
+    internal TextMeshPro textMesh;
     private bool savedIsVisible;
 
     private List<VisibilityTrigger> setInvisibleTriggers = new();
@@ -86,7 +87,7 @@ public class DynamicText : MonoBehaviour
 
     void Awake() // DON'T FORGET TO COPY TO DANGER CONTROLLER
     {
-        textMesh = GetComponent<TextMesh>();
+        textMesh = GetComponent<TextMeshPro>();
         Position = new(transform.position, transform.position, () => transform.position = Position.Value);
     }
 

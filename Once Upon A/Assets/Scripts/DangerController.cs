@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using Utils;
 using static Utils.Constants;
@@ -37,7 +38,7 @@ public class DangerController : DynamicText
     void Awake()
     {
         trigger = GetComponent<BoxCollider2D>();
-        textMesh = GetComponent<TextMesh>();
+        textMesh = GetComponent<TextMeshPro>();
         Position = new(transform.position, transform.position, () => transform.position = Position.Value);
     }
 

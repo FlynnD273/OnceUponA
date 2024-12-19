@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class HintController : MonoBehaviour
@@ -7,12 +8,12 @@ public class HintController : MonoBehaviour
     private float movement = 0.25f;
     private GameObject player;
     private Vector3 startPos;
-    private TextMesh text;
+    private TextMeshPro text;
     private LineRenderer line;
     // Start is called before the first frame update
     void Start()
     {
-        text = gameObject.GetComponent<TextMesh>();
+        text = gameObject.GetComponent<TextMeshPro>();
         line = gameObject.GetComponent<LineRenderer>();
         player = GameObject.Find("Camera");
         startPos = transform.position;

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using TMPro;
 using UnityEngine;
 
 namespace Utils
@@ -43,7 +44,7 @@ namespace Utils
         public class FontWidth
         {
             public Dictionary<char, float> fontAdvances = new();
-            private Font font;
+            private TMP_FontAsset font;
 
             public float this[char c]
             {
@@ -55,10 +56,13 @@ namespace Utils
                     }
                     if (font == null)
                     {
-                        font = Resources.Load<Font>("EduNSWACTFoundation-VariableFont_wght");
+                        /* Assets/TextMesh Pro/Resources/Fonts & Materials/EduNSWACTFoundation-VariableFont_wght SDF.asset */
+                        /* TextSettings textSettings = Resources.Load<TextSettings>("TextSettings"); */
+                        font = TMP_Settings.defaultFontAsset;
                     }
-                    font.GetCharacterInfo(c, out CharacterInfo info, 500);
-                    width = info.advance / 10f;
+                    /* _ = font.characterTable[0].GetCharacterInfo(c, out CharacterInfo info, 500); */
+                    /* width = info.advance / 10f; */
+                    width = font.characterLookupTable[c].glyph.metrics.horizontalAdvance * 0.5f;
                     fontAdvances.Add(c, width);
                     return width;
                 }

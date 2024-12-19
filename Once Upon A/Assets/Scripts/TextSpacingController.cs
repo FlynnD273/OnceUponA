@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using TMPro;
 using UnityEngine;
 using Utils;
 
@@ -23,7 +24,7 @@ public class TextSpacingController : MonoBehaviour
 
         var go = Instantiate(StaticTextPrefab);
         go.name = $"{gameObject.name}:{subtext}";
-        var gText = go.GetComponent<TextMesh>();
+        var gText = go.GetComponent<TextMeshPro>();
         gText.text = subtext;
         return go.GetComponent<DynamicText>();
     }
@@ -33,7 +34,7 @@ public class TextSpacingController : MonoBehaviour
     {
         GetComponent<DynamicText>().Position.TargetValue = transform.position;
         coll = GetComponent<BoxCollider2D>();
-        TextMesh textMesh = GetComponent<TextMesh>();
+        TextMeshPro textMesh = GetComponent<TextMeshPro>();
         allChildren = new();
         extraWidth = new();
         string text = textMesh.text;

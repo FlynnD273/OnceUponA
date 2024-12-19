@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using static Utils.Constants;
 using static Utils.Utils;
@@ -12,7 +13,7 @@ public class HeldWordController : MonoBehaviour
     private Vector3 offset = new(0, 1.8f, 0);
     private ExpDampVec3 position;
 
-    private TextMesh heldWordMesh;
+    private TextMeshPro heldWordMesh;
     private Word heldWord;
     public Word HeldWord
     {
@@ -41,7 +42,7 @@ public class HeldWordController : MonoBehaviour
 
     void Awake()
     {
-        heldWordMesh = GetComponent<TextMesh>();
+        heldWordMesh = GetComponent<TextMeshPro>();
         position = new(Vector3.zero, Vector3.zero, () => transform.position = position.Value);
     }
 
