@@ -5174,7 +5174,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 617396669695007659, guid: 99e427537987a484fbaedea5bf0a2ca2, type: 3}
       propertyPath: m_Text
-      value: and R to restart,
+      value: and Y to restart,
       objectReference: {fileID: 0}
     - target: {fileID: 4018738042205180616, guid: 99e427537987a484fbaedea5bf0a2ca2, type: 3}
       propertyPath: m_Pivot.x
@@ -6668,7 +6668,7 @@ PrefabInstance:
       objectReference: {fileID: 12800000, guid: da2ffc6a18d31b74c9f0ef066f8d83ed, type: 3}
     - target: {fileID: 617396669695007659, guid: 99e427537987a484fbaedea5bf0a2ca2, type: 3}
       propertyPath: m_Text
-      value: E to interact,
+      value: X to interact,
       objectReference: {fileID: 0}
     - target: {fileID: 617396669695007659, guid: 99e427537987a484fbaedea5bf0a2ca2, type: 3}
       propertyPath: m_RichText
@@ -12051,7 +12051,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 617396669695007659, guid: 99e427537987a484fbaedea5bf0a2ca2, type: 3}
       propertyPath: m_Text
-      value: Space to jump,
+      value: A to jump,
       objectReference: {fileID: 0}
     - target: {fileID: 6620783640016221547, guid: 99e427537987a484fbaedea5bf0a2ca2, type: 3}
       propertyPath: m_Pivot.x
@@ -17384,6 +17384,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pause menu
       objectReference: {fileID: 0}
+    - target: {fileID: 4036641818416465711, guid: cd8d4e10182d89687ba4a4e666b2695d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7865309341808221677, guid: cd8d4e10182d89687ba4a4e666b2695d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -17452,7 +17456,7 @@ PrefabInstance:
       propertyPath: m_Text
       value: 'To my little brother,
 
-        Who uses A and D to move,'
+        Who uses Left Stick to move,'
       objectReference: {fileID: 0}
     - target: {fileID: 6620783640016221547, guid: 99e427537987a484fbaedea5bf0a2ca2, type: 3}
       propertyPath: m_Pivot.x

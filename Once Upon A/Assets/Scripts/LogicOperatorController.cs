@@ -37,6 +37,6 @@ public class LogicOperatorController : TriggerLogic
                 break;
         }
 
-				State = cond;
+        State = cond;
     }
 }

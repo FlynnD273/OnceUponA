@@ -9,168 +9,168 @@ using static Utils.Utils;
 
 public class DynamicText : MonoBehaviour
 {
-  public event Action TextChanged;
-  public event Action VisibilityChanged;
-  internal TextMesh textMesh;
-  private bool savedIsVisible;
+    public event Action TextChanged;
+    public event Action VisibilityChanged;
+    internal TextMesh textMesh;
+    private bool savedIsVisible;
 
-  private List<VisibilityTrigger> setInvisibleTriggers = new();
-  private object visibilityLock = new();
-  private bool isVisible = true;
-  public bool IsVisible
-  {
-    get => isVisible;
-  }
-
-  public void SetVisibility(bool value, VisibilityTrigger source)
-  {
-    lock (visibilityLock)
+    private List<VisibilityTrigger> setInvisibleTriggers = new();
+    private object visibilityLock = new();
+    private bool isVisible = true;
+    public bool IsVisible
     {
-      if (!value)
-      {
-        if (!setInvisibleTriggers.Contains(source))
+        get => isVisible;
+    }
+
+    public void SetVisibility(bool value, VisibilityTrigger source)
+    {
+        lock (visibilityLock)
         {
-          setInvisibleTriggers.Add(source);
+            if (!value)
+            {
+                if (!setInvisibleTriggers.Contains(source))
+                {
+                    setInvisibleTriggers.Add(source);
+                }
+                isVisible = false;
+                UpdateVisibility(source);
+                return;
+            }
+            else if (setInvisibleTriggers.Contains(source))
+            {
+                setInvisibleTriggers.Remove(source);
+            }
+
+            if (setInvisibleTriggers.Count == 0 && value)
+            {
+                isVisible = true;
+                UpdateVisibility(source);
+            }
         }
-        isVisible = false;
-        UpdateVisibility(source);
-        return;
-      }
-      else if (setInvisibleTriggers.Contains(source))
-      {
-        setInvisibleTriggers.Remove(source);
-      }
-
-      if (setInvisibleTriggers.Count == 0 && value)
-      {
-        isVisible = true;
-        UpdateVisibility(source);
-      }
     }
-  }
 
-  public string Text
-  {
-    get
+    public string Text
     {
-      if (textMesh != null)
-      {
-        return textMesh.text;
-      }
-      return "";
+        get
+        {
+            if (textMesh != null)
+            {
+                return textMesh.text;
+            }
+            return "";
+        }
+        set
+        {
+            if (textMesh != null)
+            {
+                textMesh.text = value;
+            }
+            TextChanged?.Invoke();
+        }
     }
-    set
+
+    public Color Color
     {
-      if (textMesh != null)
-      {
-        textMesh.text = value;
-      }
-      TextChanged?.Invoke();
+        get => textMesh?.color ?? Color.white;
+        set
+        {
+            if (textMesh != null)
+            {
+                textMesh.color = value;
+            }
+            TextChanged?.Invoke();
+        }
     }
-  }
 
-  public Color Color
-  {
-    get => textMesh?.color ?? Color.white;
-    set
+    public ExpDampVec3 Position;
+
+    void Awake() // DON'T FORGET TO COPY TO DANGER CONTROLLER
     {
-      if (textMesh != null)
-      {
-        textMesh.color = value;
-      }
-      TextChanged?.Invoke();
+        textMesh = GetComponent<TextMesh>();
+        Position = new(transform.position, transform.position, () => transform.position = Position.Value);
     }
-  }
 
-  public ExpDampVec3 Position;
-
-  void Awake() // DON'T FORGET TO COPY TO DANGER CONTROLLER
-  {
-    textMesh = GetComponent<TextMesh>();
-    Position = new(transform.position, transform.position, () => transform.position = Position.Value);
-  }
-
-  void FixedUpdate()
-  {
-    if (GameManager.Manager.IsPaused) { return; }
-
-    transform.localPosition = Position.Next(Constants.StandardAnim, Time.fixedDeltaTime);
-  }
-
-  public float Width
-  {
-    get
+    void FixedUpdate()
     {
-      var spacingCont = GetComponent<TextSpacingController>();
-      if (spacingCont != null)
-      {
-        return spacingCont.Width;
-      }
-      var slot = GetComponent<WordSlotController>();
-      if (!IsVisible || (slot != null && !slot.IsSwappable && slot.CurrentWord == null))
-      {
-        return 0;
-      }
+        if (GameManager.Manager.IsPaused) { return; }
 
-      if (Text == "")
-      {
-        return Constants.CharWidths['M'] * 3;
-      }
-      float sum = 0;
-      foreach (var c in Text)
-      {
-        sum += Constants.CharWidths[c];
-      }
-      return sum;
+        transform.localPosition = Position.Next(Constants.StandardAnim, Time.fixedDeltaTime);
     }
-  }
 
-  private bool init = false;
-  void Update()
-  {
-    if (!init)
+    public float Width
     {
-      init = true;
-      GameManager.Manager.ResetOccurred += Reset;
-      GameManager.Manager.SaveStateOccurred += SaveState;
-    }
-  }
+        get
+        {
+            var spacingCont = GetComponent<TextSpacingController>();
+            if (spacingCont != null)
+            {
+                return spacingCont.Width;
+            }
+            var slot = GetComponent<WordSlotController>();
+            if (!IsVisible || (slot != null && !slot.IsSwappable && slot.CurrentWord == null))
+            {
+                return 0;
+            }
 
-  private void UpdateVisibility(VisibilityTrigger source)
-  {
-    GetComponent<Renderer>().enabled = isVisible;
-    foreach (var coll in GetComponents<Collider2D>())
+            if (Text == "")
+            {
+                return Constants.CharWidths['M'] * 3;
+            }
+            float sum = 0;
+            foreach (var c in Text)
+            {
+                sum += Constants.CharWidths[c];
+            }
+            return sum;
+        }
+    }
+
+    private bool init = false;
+    void Update()
     {
-      coll.enabled = IsVisible;
+        if (!init)
+        {
+            init = true;
+            GameManager.Manager.ResetOccurred += Reset;
+            GameManager.Manager.SaveStateOccurred += SaveState;
+        }
     }
-    foreach (var child in GetComponentsInChildren<DynamicText>())
+
+    private void UpdateVisibility(VisibilityTrigger source)
     {
-      if (child.gameObject == this.gameObject)
-      {
-        continue;
-      }
-      child.SetVisibility(IsVisible, source);
+        GetComponent<Renderer>().enabled = isVisible;
+        foreach (var coll in GetComponents<Collider2D>())
+        {
+            coll.enabled = IsVisible;
+        }
+        foreach (var child in GetComponentsInChildren<DynamicText>())
+        {
+            if (child.gameObject == this.gameObject)
+            {
+                continue;
+            }
+            child.SetVisibility(IsVisible, source);
+        }
+        VisibilityChanged?.Invoke();
     }
-    VisibilityChanged?.Invoke();
-  }
 
-  private void Reset()
-  {
-    /* lock (visibilityLock) */
-    /* { */
-    /*   setInvisibleTriggers = new(); */
-    /* } */
-    /* IsVisible = savedIsVisible; */
-  }
+    private void Reset()
+    {
+        /* lock (visibilityLock) */
+        /* { */
+        /*   setInvisibleTriggers = new(); */
+        /* } */
+        /* IsVisible = savedIsVisible; */
+    }
 
-  private void SaveState()
-  {
-    /* savedIsVisible = IsVisible; */
-  }
+    private void SaveState()
+    {
+        /* savedIsVisible = IsVisible; */
+    }
 
-  void OnDestroy()
-  {
-    GameManager.Manager.ResetOccurred -= Reset;
-    GameManager.Manager.SaveStateOccurred -= SaveState;
-  }
+    void OnDestroy()
+    {
+        GameManager.Manager.ResetOccurred -= Reset;
+        GameManager.Manager.SaveStateOccurred -= SaveState;
+    }
 }

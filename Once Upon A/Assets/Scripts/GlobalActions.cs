@@ -15,7 +15,7 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 
-public partial class @GlobalActions: IInputActionCollection2, IDisposable
+public partial class @GlobalActions : IInputActionCollection2, IDisposable
 {
     public InputActionAsset asset { get; }
     public @GlobalActions()

@@ -6,6 +6,6 @@ public class CheckpointController : MonoBehaviour
 {
     void Awake()
     {
-      GetComponent<Renderer>().enabled = false;
+        GetComponent<Renderer>().enabled = false;
     }
 }
