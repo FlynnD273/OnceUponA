@@ -55,15 +55,6 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Reset"",
-                    ""type"": ""Button"",
-                    ""id"": ""8f0d27fa-eea4-4664-a175-af9a6b16a209"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Move"",
                     ""type"": ""Value"",
                     ""id"": ""32cf271b-8db7-4059-a05a-afad8c565ec6"",
@@ -138,17 +129,6 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""80f7fee0-84f8-4029-a270-ba30c5506956"",
-                    ""path"": ""<Keyboard>/r"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Reset"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""4bd168ca-8647-4560-bfb9-29cd91d08368"",
                     ""path"": ""<Gamepad>/start"",
                     ""interactions"": """",
@@ -177,17 +157,6 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Swap"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""ddfb0389-5262-43c0-918a-418679a2aeed"",
-                    ""path"": ""<Gamepad>/buttonNorth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Reset"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -344,7 +313,6 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
         m_Actions_Cancel = m_Actions.FindAction("Cancel", throwIfNotFound: true);
         m_Actions_Jump = m_Actions.FindAction("Jump", throwIfNotFound: true);
         m_Actions_Swap = m_Actions.FindAction("Swap", throwIfNotFound: true);
-        m_Actions_Reset = m_Actions.FindAction("Reset", throwIfNotFound: true);
         m_Actions_Move = m_Actions.FindAction("Move", throwIfNotFound: true);
         m_Actions_Mouse = m_Actions.FindAction("Mouse", throwIfNotFound: true);
         m_Actions_LeftClick = m_Actions.FindAction("LeftClick", throwIfNotFound: true);
@@ -412,7 +380,6 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
     private readonly InputAction m_Actions_Cancel;
     private readonly InputAction m_Actions_Jump;
     private readonly InputAction m_Actions_Swap;
-    private readonly InputAction m_Actions_Reset;
     private readonly InputAction m_Actions_Move;
     private readonly InputAction m_Actions_Mouse;
     private readonly InputAction m_Actions_LeftClick;
@@ -423,7 +390,6 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
         public InputAction @Cancel => m_Wrapper.m_Actions_Cancel;
         public InputAction @Jump => m_Wrapper.m_Actions_Jump;
         public InputAction @Swap => m_Wrapper.m_Actions_Swap;
-        public InputAction @Reset => m_Wrapper.m_Actions_Reset;
         public InputAction @Move => m_Wrapper.m_Actions_Move;
         public InputAction @Mouse => m_Wrapper.m_Actions_Mouse;
         public InputAction @LeftClick => m_Wrapper.m_Actions_LeftClick;
@@ -445,9 +411,6 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
             @Swap.started += instance.OnSwap;
             @Swap.performed += instance.OnSwap;
             @Swap.canceled += instance.OnSwap;
-            @Reset.started += instance.OnReset;
-            @Reset.performed += instance.OnReset;
-            @Reset.canceled += instance.OnReset;
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
@@ -470,9 +433,6 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
             @Swap.started -= instance.OnSwap;
             @Swap.performed -= instance.OnSwap;
             @Swap.canceled -= instance.OnSwap;
-            @Reset.started -= instance.OnReset;
-            @Reset.performed -= instance.OnReset;
-            @Reset.canceled -= instance.OnReset;
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
@@ -504,7 +464,6 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
         void OnCancel(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnSwap(InputAction.CallbackContext context);
-        void OnReset(InputAction.CallbackContext context);
         void OnMove(InputAction.CallbackContext context);
         void OnMouse(InputAction.CallbackContext context);
         void OnLeftClick(InputAction.CallbackContext context);

@@ -86,10 +86,6 @@ public class GameManager : MonoBehaviour
         }
 
         if (IsPaused) { return; }
-        if (Input.Actions.Reset.WasPressedThisFrame())
-        {
-            Reset();
-        }
     }
 
     void LateUpdate()

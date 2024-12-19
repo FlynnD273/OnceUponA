@@ -33,15 +33,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Reset",
-                    "type": "Button",
-                    "id": "8f0d27fa-eea4-4664-a175-af9a6b16a209",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Move",
                     "type": "Value",
                     "id": "32cf271b-8db7-4059-a05a-afad8c565ec6",
@@ -116,17 +107,6 @@
                 },
                 {
                     "name": "",
-                    "id": "80f7fee0-84f8-4029-a270-ba30c5506956",
-                    "path": "<Keyboard>/r",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Reset",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "4bd168ca-8647-4560-bfb9-29cd91d08368",
                     "path": "<Gamepad>/start",
                     "interactions": "",
@@ -155,17 +135,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "Swap",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "ddfb0389-5262-43c0-918a-418679a2aeed",
-                    "path": "<Gamepad>/buttonNorth",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Reset",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
