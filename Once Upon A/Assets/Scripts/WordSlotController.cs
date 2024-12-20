@@ -1,17 +1,12 @@
 using UnityEngine;
-using Utils;
 using static Utils.Constants;
-using static Utils.Utils;
 
 public class WordSlotController : TriggerLogic
 {
     private Word currentWord;
     public Word CurrentWord
     {
-        get
-        {
-            return currentWord;
-        }
+        get => currentWord;
         set
         {
             currentWord = value;
@@ -63,20 +58,16 @@ public class WordSlotController : TriggerLogic
     private BoxCollider2D trigger;
     private DynamicText text;
 
-    private int startLength;
     private LineRenderer line;
 
-    private AudioSource audioSource;
-    private ExpDamp lineLength = new();
+    private readonly ExpDamp lineLength = new();
 
     private Word savedWord;
     private bool savedIsSwappable;
 
-    // Start is called before the first frame update
-    void Awake()
+    public void Awake()
     {
         InvolvedSlots = new TriggerLogic[] { this };
-        audioSource = GetComponent<AudioSource>();
         text = GetComponent<DynamicText>();
         trigger = GetComponent<BoxCollider2D>();
 
@@ -85,7 +76,7 @@ public class WordSlotController : TriggerLogic
         line.material = new Material(Shader.Find("Legacy Shaders/Particles/Alpha Blended Premultiply"));
         line.startWidth = 0.15f;
         line.endWidth = line.startWidth;
-        line.SetPositions(new Vector3[] { new Vector3(0, -25), new Vector3(0, -25) });
+        line.SetPositions(new Vector3[] { new(0, -25), new(0, -25) });
         line.numCapVertices = 5;
         line.positionCount = 2;
 
@@ -113,14 +104,7 @@ public class WordSlotController : TriggerLogic
     public override void Init()
     {
         base.Init();
-        if (text.Text.Trim('_').Length == 0)
-        {
-            CurrentWord = null;
-        }
-        else
-        {
-            CurrentWord = new(StartingWordType, text.Text);
-        }
+        CurrentWord = text.Text.Trim('_').Length == 0 ? null : new(StartingWordType, text.Text);
 
         GameManager.Manager.ResetOccurred += Reset;
         GameManager.Manager.SaveStateOccurred += SaveState;
@@ -129,7 +113,7 @@ public class WordSlotController : TriggerLogic
 
     internal override void InheritedUpdate()
     {
-        line.SetPosition(1, new Vector2(lineLength.Next(Constants.StandardAnim, Time.deltaTime), -25));
+        line.SetPosition(1, new Vector2(lineLength.Next(StandardAnim, Time.deltaTime), -25));
     }
 
     private void Reset()
@@ -146,12 +130,12 @@ public class WordSlotController : TriggerLogic
 
     public Word Swap(Word newWord)
     {
-        var temp = CurrentWord;
+        Word temp = CurrentWord;
         CurrentWord = newWord;
         return temp;
     }
 
-    void OnDestroy()
+    public void OnDestroy()
     {
         GameManager.Manager.ResetOccurred -= Reset;
         GameManager.Manager.SaveStateOccurred -= SaveState;

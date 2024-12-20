@@ -1,27 +1,18 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
 using Utils;
-using static Utils.Utils;
 
 public class DynamicText : MonoBehaviour
 {
     public event Action TextChanged;
     public event Action VisibilityChanged;
     internal TextMeshPro textMesh;
-    private bool savedIsVisible;
 
-    private List<VisibilityTrigger> setInvisibleTriggers = new();
-    private object visibilityLock = new();
-    private bool isVisible = true;
-    public bool IsVisible
-    {
-        get => isVisible;
-    }
+    private readonly List<VisibilityTrigger> setInvisibleTriggers = new();
+    private readonly object visibilityLock = new();
+    public bool IsVisible { get; private set; } = true;
 
     public void SetVisibility(bool value, VisibilityTrigger source)
     {
@@ -33,18 +24,18 @@ public class DynamicText : MonoBehaviour
                 {
                     setInvisibleTriggers.Add(source);
                 }
-                isVisible = false;
+                IsVisible = false;
                 UpdateVisibility(source);
                 return;
             }
             else if (setInvisibleTriggers.Contains(source))
             {
-                setInvisibleTriggers.Remove(source);
+                _ = setInvisibleTriggers.Remove(source);
             }
 
             if (setInvisibleTriggers.Count == 0 && value)
             {
-                isVisible = true;
+                IsVisible = true;
                 UpdateVisibility(source);
             }
         }
@@ -52,14 +43,7 @@ public class DynamicText : MonoBehaviour
 
     public string Text
     {
-        get
-        {
-            if (textMesh != null)
-            {
-                return textMesh.text;
-            }
-            return "";
-        }
+        get => textMesh != null ? textMesh.text : "";
         set
         {
             if (textMesh != null)
@@ -85,13 +69,13 @@ public class DynamicText : MonoBehaviour
 
     public ExpDampVec3 Position;
 
-    void Awake() // DON'T FORGET TO COPY TO DANGER CONTROLLER
+    public void Awake()
     {
         textMesh = GetComponent<TextMeshPro>();
         Position = new(transform.position, transform.position, () => transform.position = Position.Value);
     }
 
-    void FixedUpdate()
+    public void FixedUpdate()
     {
         if (GameManager.Manager.IsPaused) { return; }
 
@@ -102,12 +86,12 @@ public class DynamicText : MonoBehaviour
     {
         get
         {
-            var spacingCont = GetComponent<TextSpacingController>();
+            TextSpacingController spacingCont = GetComponent<TextSpacingController>();
             if (spacingCont != null)
             {
                 return spacingCont.Width;
             }
-            var slot = GetComponent<WordSlotController>();
+            WordSlotController slot = GetComponent<WordSlotController>();
             if (!IsVisible || (slot != null && !slot.IsSwappable && slot.CurrentWord == null))
             {
                 return 0;
@@ -118,7 +102,7 @@ public class DynamicText : MonoBehaviour
                 return Constants.CharWidths['M'] * 3;
             }
             float sum = 0;
-            foreach (var c in Text)
+            foreach (char c in Text)
             {
                 sum += Constants.CharWidths[c];
             }
@@ -127,7 +111,7 @@ public class DynamicText : MonoBehaviour
     }
 
     private bool init = false;
-    void Update()
+    public void Update()
     {
         if (!init)
         {
@@ -139,14 +123,14 @@ public class DynamicText : MonoBehaviour
 
     private void UpdateVisibility(VisibilityTrigger source)
     {
-        GetComponent<Renderer>().enabled = isVisible;
-        foreach (var coll in GetComponents<Collider2D>())
+        GetComponent<Renderer>().enabled = IsVisible;
+        foreach (Collider2D coll in GetComponents<Collider2D>())
         {
             coll.enabled = IsVisible;
         }
-        foreach (var child in GetComponentsInChildren<DynamicText>())
+        foreach (DynamicText child in GetComponentsInChildren<DynamicText>())
         {
-            if (child.gameObject == this.gameObject)
+            if (child.gameObject == gameObject)
             {
                 continue;
             }
@@ -169,7 +153,7 @@ public class DynamicText : MonoBehaviour
         /* savedIsVisible = IsVisible; */
     }
 
-    void OnDestroy()
+    public void OnDestroy()
     {
         GameManager.Manager.ResetOccurred -= Reset;
         GameManager.Manager.SaveStateOccurred -= SaveState;

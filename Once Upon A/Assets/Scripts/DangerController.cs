@@ -1,9 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using Utils;
 using static Utils.Constants;
 
 public class DangerController : DynamicText
@@ -18,12 +13,12 @@ public class DangerController : DynamicText
             if (IsDangerous)
             {
                 trigger.enabled = true;
-                textMesh.color = Constants.WordToColor[WordType.Danger];
+                textMesh.color = WordToColor[WordType.Danger];
             }
             else
             {
                 trigger.enabled = false;
-                textMesh.color = Constants.WordToColor[WordType.White];
+                textMesh.color = WordToColor[WordType.White];
             }
         }
     }
@@ -35,14 +30,13 @@ public class DangerController : DynamicText
 
     public TriggerLogic DeactivateTrigger;
 
-    void Awake()
+    public new void Awake()
     {
+        base.Awake();
         trigger = GetComponent<BoxCollider2D>();
-        textMesh = GetComponent<TextMeshPro>();
-        Position = new(transform.position, transform.position, () => transform.position = Position.Value);
     }
 
-    void Start()
+    public void Start()
     {
         isDangerous = true;
         if (DeactivateTrigger != null)
@@ -53,9 +47,9 @@ public class DangerController : DynamicText
         trigger.size = new Vector2(Width, trigger.size.y);
     }
 
-    void OnTriggerEnter2D(Collider2D coll)
+    public void OnTriggerEnter2D(Collider2D coll)
     {
-        bool triggered = (DeactivateTrigger != null && !DeactivateTrigger.State);
+        bool triggered = DeactivateTrigger != null && !DeactivateTrigger.State;
         if (IsVisible && (triggered || coll.gameObject.layer == (int)Layers.Player))
         {
             coll.GetComponent<Rigidbody2D>().velocity = new Vector2(Direction.normalized.x * Power, Direction.normalized.y * Power);

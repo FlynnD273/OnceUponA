@@ -1,11 +1,29 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
-public class GameManager : MonoBehaviour
+public interface IGameManager
+{
+    bool IsPaused { get; set; }
+    InputSystem Input { get; }
+
+    event Action PauseChanged;
+    event Action ResetOccurred;
+    event Action SaveStateOccurred;
+
+    void Awake();
+    void JustActivated();
+    void JustSwapped();
+    void LateUpdate();
+    void LoadLevel();
+    void LoadTitle();
+    void PlayTurnSound();
+    void Reset();
+    void SaveState();
+    void Update();
+}
+public class GameManager : MonoBehaviour, IGameManager
 {
     public AudioClip[] PageTurnClips;
 
@@ -31,14 +49,7 @@ public class GameManager : MonoBehaviour
         get => isPaused; set
         {
             isPaused = value;
-            if (isPaused)
-            {
-                Time.timeScale = 0;
-            }
-            else
-            {
-                Time.timeScale = 1;
-            }
+            Time.timeScale = isPaused ? 0 : 1;
             PauseChanged?.Invoke();
         }
     }
@@ -57,7 +68,7 @@ public class GameManager : MonoBehaviour
     private bool save;
     private bool reset;
 
-    void Awake()
+    public void Awake()
     {
         Manager = this;
         audioSource = GetComponent<AudioSource>();
@@ -72,7 +83,7 @@ public class GameManager : MonoBehaviour
         SaveState();
     }
 
-    void Update()
+    public void Update()
     {
         if (!IsPaused && Input.Actions.Cancel.WasPressedThisFrame())
         {
@@ -88,7 +99,7 @@ public class GameManager : MonoBehaviour
         if (IsPaused) { return; }
     }
 
-    void LateUpdate()
+    public void LateUpdate()
     {
         if (save)
         {
@@ -111,7 +122,7 @@ public class GameManager : MonoBehaviour
 
     public void PlayTurnSound()
     {
-        audioSource.clip = GameManager.Manager.PageTurnClips[Random.Range(0, PageTurnClips.Length)];
+        audioSource.clip = Manager.PageTurnClips[Random.Range(0, PageTurnClips.Length)];
         audioSource.Play();
     }
 

@@ -74,7 +74,7 @@ namespace Utils
     {
         public static Color FromHex(string hex)
         {
-            if (hex.Length != 6) { throw new System.Exception($"String of length {hex.Length} is not valid! Must be of length 6."); }
+            if (hex.Length != 6) { throw new Exception($"String of length {hex.Length} is not valid! Must be of length 6."); }
             byte[] bytes = new byte[3];
             for (int i = 0; i < hex.Length - 1; i += 2)
             {
@@ -86,10 +86,10 @@ namespace Utils
 
         public static void Invoke(this MonoBehaviour mb, Action f, float delay)
         {
-            mb.StartCoroutine(InvokeRoutine(f, delay));
+            _ = mb.StartCoroutine(InvokeRoutine(f, delay));
         }
 
-        private static IEnumerator InvokeRoutine(System.Action f, float delay)
+        private static IEnumerator InvokeRoutine(Action f, float delay)
         {
             yield return new WaitForSeconds(delay);
             f();

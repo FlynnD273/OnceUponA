@@ -1,18 +1,15 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
 using Utils;
 
 public class TextSpacingController : MonoBehaviour
 {
-    private float width;
-    public float Width { get => width; private set => width = value; }
+    public float Width { get; private set; }
 
     public GameObject StaticTextPrefab;
     public DynamicText[] Children;
-    private string placeholderString = "$$";
+    private readonly string placeholderString = "$$";
     private List<DynamicText> allChildren;
     private List<float> extraWidth;
 
@@ -22,15 +19,14 @@ public class TextSpacingController : MonoBehaviour
     {
         string subtext = text;
 
-        var go = Instantiate(StaticTextPrefab);
+        GameObject go = Instantiate(StaticTextPrefab);
         go.name = $"{gameObject.name}:{subtext}";
-        var gText = go.GetComponent<TextMeshPro>();
+        TextMeshPro gText = go.GetComponent<TextMeshPro>();
         gText.text = subtext;
         return go.GetComponent<DynamicText>();
     }
 
-    // Start is called before the first frame update
-    void Start()
+    public void Start()
     {
         GetComponent<DynamicText>().Position.TargetValue = transform.position;
         coll = GetComponent<BoxCollider2D>();
@@ -47,7 +43,7 @@ public class TextSpacingController : MonoBehaviour
             {
                 if (startIndex != i)
                 {
-                    allChildren.Add(CreateStaticText(text.Substring(startIndex, i - startIndex)));
+                    allChildren.Add(CreateStaticText(text[startIndex..i]));
                     extraWidth.Add(0);
                 }
                 if (dynamicIndex < Children.Length)
@@ -78,7 +74,7 @@ public class TextSpacingController : MonoBehaviour
 
         if (startIndex < text.Length)
         {
-            string subtext = text.Substring(startIndex, text.Length - startIndex);
+            string subtext = text[startIndex..];
             allChildren.Add(CreateStaticText(subtext));
 
             extraWidth.Add(0);
@@ -86,7 +82,7 @@ public class TextSpacingController : MonoBehaviour
 
         textMesh.text = "";
 
-        foreach (var child in allChildren)
+        foreach (DynamicText child in allChildren)
         {
             child.TextChanged += UpdateAll;
             child.VisibilityChanged += UpdateVis;
@@ -97,7 +93,7 @@ public class TextSpacingController : MonoBehaviour
     private bool hasInit = false;
 
 
-    void Update()
+    public void Update()
     {
         if (GameManager.Manager.IsPaused) { return; }
 
@@ -111,7 +107,7 @@ public class TextSpacingController : MonoBehaviour
 
     private void SnapPosition()
     {
-        foreach (var child in allChildren)
+        foreach (DynamicText child in allChildren)
         {
             child.Position.Value = child.Position.TargetValue;
             child.transform.localPosition = child.Position.Value;

@@ -5,7 +5,7 @@ public class ExpDamp
 {
     public float TargetValue { get; set; }
 
-    private Action OnSet;
+    private readonly Action OnSet;
     private float value;
     public float Value
     {
@@ -26,26 +26,19 @@ public class ExpDamp
 
     public float Next(float speed, float deltaTime)
     {
-        float val = Value + (TargetValue - Value) * (1 - Mathf.Exp(-speed * deltaTime));
-        if (Mathf.Abs(TargetValue - val) < 0.001f)
-        {
-            Value = TargetValue;
-        }
-        else
-        {
-            Value = val;
-        }
+        float val = Value + ((TargetValue - Value) * (1 - Mathf.Exp(-speed * deltaTime)));
+        Value = Mathf.Abs(TargetValue - val) < 0.001f ? TargetValue : val;
         return Value;
     }
 }
 
 public class ExpDampVec3
 {
-    private Action OnSet;
+    private readonly Action OnSet;
 
-    private ExpDamp x = new();
-    private ExpDamp y = new();
-    private ExpDamp z = new();
+    private readonly ExpDamp x = new();
+    private readonly ExpDamp y = new();
+    private readonly ExpDamp z = new();
 
     public ExpDampVec3(Vector3 value = new(), Vector3 targetValue = new(), Action onSet = null)
     {
@@ -56,7 +49,7 @@ public class ExpDampVec3
 
     public Vector3 TargetValue
     {
-        get => new Vector3(x.TargetValue, y.TargetValue, z.TargetValue);
+        get => new(x.TargetValue, y.TargetValue, z.TargetValue);
         set
         {
             x.TargetValue = value.x;
@@ -67,7 +60,7 @@ public class ExpDampVec3
 
     public Vector3 Value
     {
-        get => new Vector3(x.Value, y.Value, z.Value);
+        get => new(x.Value, y.Value, z.Value);
         set
         {
             x.Value = value.x;
@@ -79,9 +72,9 @@ public class ExpDampVec3
 
     public Vector3 Next(float speed, float deltaTime)
     {
-        x.Next(speed, deltaTime);
-        y.Next(speed, deltaTime);
-        z.Next(speed, deltaTime);
+        _ = x.Next(speed, deltaTime);
+        _ = y.Next(speed, deltaTime);
+        _ = z.Next(speed, deltaTime);
 
         if ((TargetValue - Value).magnitude < 0.001f)
         {

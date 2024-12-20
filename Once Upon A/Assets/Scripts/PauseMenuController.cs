@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -16,12 +13,12 @@ public class PauseMenuController : MonoBehaviour
     private CurlyController curly;
     private PauseScaler scale;
 
-    void Awake()
+    public void Awake()
     {
         canvas = GetComponentInChildren<Canvas>();
     }
 
-    void Start()
+    public void Start()
     {
         curly = GetComponentInChildren<CurlyController>();
         scale = GetComponentInChildren<PauseScaler>();
@@ -70,18 +67,14 @@ public class PauseMenuController : MonoBehaviour
         GameManager.Manager.Reset();
     }
 
-    void OnDestroy()
+    public void OnDestroy()
     {
         GameManager.Manager.PauseChanged -= OnPauseChanged;
     }
 
-    void AddSelectionListeners(Selectable sel)
+    public void AddSelectionListeners(Selectable sel)
     {
-        EventTrigger ev = sel.GetComponent<EventTrigger>();
-        if (ev == null)
-        {
-            ev = sel.gameObject.AddComponent<EventTrigger>();
-        }
+        EventTrigger ev = sel.GetComponent<EventTrigger>() ?? sel.gameObject.AddComponent<EventTrigger>();
         EventTrigger.Entry selectEntry = new()
         {
             eventID = EventTriggerType.Select,
@@ -111,11 +104,11 @@ public class PauseMenuController : MonoBehaviour
         ev.triggers.Add(exitEntry);
     }
 
-    void OnSelect(BaseEventData data) { }
+    public void OnSelect(BaseEventData data) { }
 
-    void OnDeselect(BaseEventData data) { }
+    public void OnDeselect(BaseEventData data) { }
 
-    void OnPointerEnter(BaseEventData data)
+    public void OnPointerEnter(BaseEventData data)
     {
         PointerEventData pointer = data as PointerEventData;
         Selectable obj = pointer.pointerEnter.GetComponentInParent<Selectable>() ?? pointer.pointerEnter.GetComponentInChildren<Selectable>();
@@ -123,13 +116,13 @@ public class PauseMenuController : MonoBehaviour
         lastSelected = obj;
     }
 
-    void OnPointerExit(BaseEventData data)
+    public void OnPointerExit(BaseEventData data)
     {
-        var pointer = data as PointerEventData;
+        PointerEventData pointer = data as PointerEventData;
         pointer.selectedObject = null;
     }
 
-    void OnNavigate(InputAction.CallbackContext context)
+    public void OnNavigate(InputAction.CallbackContext context)
     {
         if (EventSystem.current.currentSelectedGameObject == null)
         {
@@ -137,7 +130,7 @@ public class PauseMenuController : MonoBehaviour
         }
     }
 
-    void OnPress(InputAction.CallbackContext context)
+    public void OnPress(InputAction.CallbackContext context)
     {
         if (EventSystem.current.currentSelectedGameObject == null)
         {

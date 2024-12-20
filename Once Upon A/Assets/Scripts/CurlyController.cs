@@ -1,9 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Utils;
-using static Utils.Utils;
 
 public class CurlyController : MonoBehaviour
 {
@@ -14,11 +10,11 @@ public class CurlyController : MonoBehaviour
     private GameObject twin;
 
 
-    void Awake()
+    public void Awake()
     {
         twin = new GameObject("Curly 2");
-        var img = twin.AddComponent<Image>();
-        var thisImg = GetComponent<Image>();
+        Image img = twin.AddComponent<Image>();
+        Image thisImg = GetComponent<Image>();
         trans = GetComponent<RectTransform>();
         twinTrans = twin.GetComponent<RectTransform>();
 
@@ -40,8 +36,8 @@ public class CurlyController : MonoBehaviour
         });
     }
 
-    void Update()
+    public void Update()
     {
-        Offset.Next(15, Time.unscaledDeltaTime);
+        _ = Offset.Next(15, Time.unscaledDeltaTime);
     }
 }

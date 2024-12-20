@@ -1,12 +1,9 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using UnityEngine;
 using static Utils.Constants;
-using Debug = UnityEngine.Debug;
-using Random = UnityEngine.Random;
 
 public class PlayerController : MonoBehaviour
 {
@@ -30,7 +27,6 @@ public class PlayerController : MonoBehaviour
     private Collider2D coll;
     private bool isGrounded;
     private bool wasGrounded;
-    private bool jumping;
     private bool jumpReleased;
     private bool isBouncy;
 
@@ -52,7 +48,7 @@ public class PlayerController : MonoBehaviour
 
     private InputSystem Input;
 
-    void Awake()
+    public void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         coll = GetComponent<Collider2D>();
@@ -65,7 +61,7 @@ public class PlayerController : MonoBehaviour
         anim = GetComponent<Animator>();
     }
 
-    void Start()
+    public void Start()
     {
         GameManager.Manager.ResetOccurred += Reset;
         GameManager.Manager.SaveStateOccurred += SaveState;
@@ -84,8 +80,7 @@ public class PlayerController : MonoBehaviour
         lockControls.Reset();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Update()
     {
         if (GameManager.Manager.IsPaused) { return; }
 
@@ -100,26 +95,11 @@ public class PlayerController : MonoBehaviour
         }
         if (isGrounded)
         {
-            if (Math.Abs(rb.velocity.x) <= 0.1f)
-            {
-                State = PlayerState.Idle;
-            }
-            else
-            {
-                State = PlayerState.Walking;
-
-            }
+            State = Math.Abs(rb.velocity.x) <= 0.1f ? PlayerState.Idle : PlayerState.Walking;
         }
         else
         {
-            if (rb.velocity.y <= 0)
-            {
-                State = PlayerState.Falling;
-            }
-            else
-            {
-                State = PlayerState.Jumping;
-            }
+            State = rb.velocity.y <= 0 ? PlayerState.Falling : PlayerState.Jumping;
         }
 
         if (Math.Abs(rb.velocity.x) >= 0.1f)
@@ -131,25 +111,18 @@ public class PlayerController : MonoBehaviour
 
         if (!lockControls.IsRunning)
         {
-            var slot = GetCurrentSlot();
+            WordSlotController slot = GetCurrentSlot();
             if (isGrounded && slot != null && Input.Actions.Swap.WasPressedThisFrame())
             {
                 HeldWordControl.HeldWord = slot.Swap(HeldWordControl.HeldWord);
                 GameManager.Manager.JustSwapped();
 
-                if ((slot.CurrentWord?.Type ?? WordType.Normal) == WordType.Bouncy)
-                {
-                    isBouncy = true;
-                }
-                else
-                {
-                    isBouncy = false;
-                }
+                isBouncy = (slot.CurrentWord?.Type ?? WordType.Normal) == WordType.Bouncy;
             }
         }
     }
 
-    void FixedUpdate()
+    public void FixedUpdate()
     {
 
         if (lockControls.IsRunning)
@@ -176,8 +149,10 @@ public class PlayerController : MonoBehaviour
         }
 
         Physics2D.queriesHitTriggers = false;
-        RaycastHit2D hit = Physics2D.BoxCast(new Vector2(transform.position.x + coll.offset.x - (x + px) / 80, transform.position.y + coll.offset.y), new Vector2(coll.bounds.size.x * 0.9f, 0.1f), 0, Vector2.down, Mathf.Infinity, 1);
-        isGrounded = hit.collider != null && hit.distance < Grounding + coll.bounds.size.y / 2;
+        Vector2 origin = new(transform.position.x + coll.offset.x - ((x + px) / 80), transform.position.y + coll.offset.y);
+        Vector2 size = new(coll.bounds.size.x * 0.9f, 0.1f);
+        RaycastHit2D hit = Physics2D.BoxCast(origin, size, 0, Vector2.down, Mathf.Infinity, 1);
+        isGrounded = hit.collider != null && hit.distance < Grounding + (coll.bounds.size.y / 2);
 
         if (wasGrounded && !isGrounded)
         {
@@ -197,14 +172,7 @@ public class PlayerController : MonoBehaviour
 
         if ((isGrounded || (coyote.IsRunning && coyote.Elapsed < coyoteTimeSpan)) && jumpReleased && Input.Actions.Jump.IsPressed())
         {
-            if (isBouncy)
-            {
-                y = BouncyJumpHeight;
-            }
-            else
-            {
-                y = JumpHeight;
-            }
+            y = isBouncy ? BouncyJumpHeight : JumpHeight;
             jumpReleased = false;
             isGrounded = false;
             startJump.Restart();
@@ -217,9 +185,9 @@ public class PlayerController : MonoBehaviour
         wasGrounded = isGrounded;
     }
 
-    void OnTriggerEnter2D(Collider2D collision)
+    public void OnTriggerEnter2D(Collider2D collision)
     {
-        var slot = collision.gameObject.GetComponent<WordSlotController>();
+        WordSlotController slot = collision.gameObject.GetComponent<WordSlotController>();
         if (slot != null)
         {
             interactingSlots.Add(slot);
@@ -234,22 +202,15 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateBouncy()
     {
-        if (interactingSlots.Any(x => (x.CurrentWord?.Type ?? WordType.Normal) == WordType.Bouncy))
-        {
-            isBouncy = true;
-        }
-        else
-        {
-            isBouncy = false;
-        }
+        isBouncy = interactingSlots.Any(static x => (x.CurrentWord?.Type ?? WordType.Normal) == WordType.Bouncy);
     }
 
-    void OnTriggerExit2D(Collider2D collision)
+    public void OnTriggerExit2D(Collider2D collision)
     {
-        var slot = collision.gameObject.GetComponent<WordSlotController>();
+        WordSlotController slot = collision.gameObject.GetComponent<WordSlotController>();
         if (slot != null)
         {
-            interactingSlots.Remove(slot);
+            _ = interactingSlots.Remove(slot);
             UpdateBouncy();
         }
     }
@@ -263,10 +224,10 @@ public class PlayerController : MonoBehaviour
 
     public WordSlotController GetCurrentSlot()
     {
-        return interactingSlots.FirstOrDefault(x => x.IsSwappable);
+        return interactingSlots.FirstOrDefault(static x => x.IsSwappable);
     }
 
-    void OnDestroy()
+    public void OnDestroy()
     {
         GameManager.Manager.ResetOccurred -= Reset;
         GameManager.Manager.SaveStateOccurred -= SaveState;

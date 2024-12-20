@@ -1,19 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
-public class LogicOperatorController : TriggerLogic
+public partial class LogicOperatorController : TriggerLogic
 {
-    public enum LogicType { And, Or }
-
     public TriggerLogic[] Slots;
     public LogicType Operator;
 
     public override void Init()
     {
         base.Init();
-        foreach (var slot in Slots)
+        foreach (TriggerLogic slot in Slots)
         {
             slot.StateChanged += UpdateState;
         }
@@ -24,19 +19,12 @@ public class LogicOperatorController : TriggerLogic
     private void UpdateState()
     {
         bool cond = false;
-        switch (Operator)
+        cond = Operator switch
         {
-            case LogicType.Or:
-                cond = Slots.Any(x => x.State);
-                break;
-            case LogicType.And:
-                cond = Slots.All(x => x.State);
-                break;
-            default:
-                cond = false;
-                break;
-        }
-
+            LogicType.Or => Slots.Any(static x => x.State),
+            LogicType.And => Slots.All(static x => x.State),
+            _ => false,
+        };
         State = cond;
     }
 }

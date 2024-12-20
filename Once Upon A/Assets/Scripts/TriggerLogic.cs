@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class TriggerLogic : MonoBehaviour
@@ -13,10 +11,7 @@ public class TriggerLogic : MonoBehaviour
     internal bool state = true;
     public bool State
     {
-        get
-        {
-            return state;
-        }
+        get => state;
         internal set
         {
             if (state != value)

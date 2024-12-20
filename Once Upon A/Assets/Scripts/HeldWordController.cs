@@ -1,10 +1,6 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using static Utils.Constants;
-using static Utils.Utils;
 
 public class HeldWordController : MonoBehaviour
 {
@@ -17,10 +13,7 @@ public class HeldWordController : MonoBehaviour
     private Word heldWord;
     public Word HeldWord
     {
-        get
-        {
-            return heldWord;
-        }
+        get => heldWord;
         set
         {
             heldWord = value;
@@ -32,7 +25,7 @@ public class HeldWordController : MonoBehaviour
             {
                 heldWordMesh.text = value.Text;
                 heldWordMesh.color = WordToColor[value.Type];
-                var xOffset = 1f * Mathf.Sign(Target.transform.localScale.x);
+                float xOffset = 1f * Mathf.Sign(Target.transform.localScale.x);
                 position.Value = Target.transform.position + new Vector3(xOffset, -1);
             }
         }
@@ -40,13 +33,13 @@ public class HeldWordController : MonoBehaviour
 
     private Word savedWord;
 
-    void Awake()
+    public void Awake()
     {
         heldWordMesh = GetComponent<TextMeshPro>();
         position = new(Vector3.zero, Vector3.zero, () => transform.position = position.Value);
     }
 
-    void Start()
+    public void Start()
     {
         position.TargetValue = Target.transform.position + offset;
         position.Value = Target.transform.position + offset;
@@ -64,15 +57,15 @@ public class HeldWordController : MonoBehaviour
         savedWord = HeldWord;
     }
 
-    void OnDestroy()
+    public void OnDestroy()
     {
         GameManager.Manager.ResetOccurred -= Reset;
         GameManager.Manager.SaveStateOccurred -= SaveState;
     }
 
-    void FixedUpdate()
+    public void FixedUpdate()
     {
         position.TargetValue = Target.transform.position + offset;
-        position.Next(Speed, Time.fixedDeltaTime);
+        _ = position.Next(Speed, Time.fixedDeltaTime);
     }
 }

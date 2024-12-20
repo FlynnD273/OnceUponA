@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using static Utils.Constants;
 
@@ -24,7 +22,7 @@ public class PlayerEnterTrigger : TriggerLogic
         savedState = State;
     }
 
-    void OnTriggerEnter2D(Collider2D coll)
+    public void OnTriggerEnter2D(Collider2D coll)
     {
         if (coll.gameObject.layer == (int)Layers.Player)
         {

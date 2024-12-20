@@ -1,8 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static Utils.Utils;
 
 
 public class CameraController : MonoBehaviour
@@ -19,7 +15,7 @@ public class CameraController : MonoBehaviour
     private ExpDamp zoom;
     private ExpDampVec3 position;
 
-    void Awake()
+    public void Awake()
     {
         cam = GetComponent<Camera>();
         normalSize = cam.orthographicSize;
@@ -27,29 +23,20 @@ public class CameraController : MonoBehaviour
         position = new(Vector3.zero, Vector3.zero, () => transform.position = position?.Value ?? Vector3.zero);
     }
 
-    void Start()
+    public void Start()
     {
         position.TargetValue = Target.transform.position;
         position.Value = Target.transform.position;
     }
 
-    void Update()
+    public void Update()
     {
-        if (GameManager.Manager.IsPaused)
-        {
-            zoom.TargetValue = normalSize * 1.1f;
-        }
-        else
-        {
-            zoom.TargetValue = normalSize;
-        }
+        zoom.TargetValue = GameManager.Manager.IsPaused ? normalSize * 1.1f : normalSize;
 
-        zoom.Next(ZoomSpeed, Time.unscaledDeltaTime);
-
-        /* if (GameManager.Manager.IsPaused) { return; } */
+        _ = zoom.Next(ZoomSpeed, Time.unscaledDeltaTime);
     }
 
-    void FixedUpdate()
+    public void FixedUpdate()
     {
         Vector2 deltaPos = Target.transform.position - transform.position;
         float x = transform.position.x, y = transform.position.y;
@@ -73,6 +60,6 @@ public class CameraController : MonoBehaviour
         }
 
         position.TargetValue = new Vector3(x, y, -100);
-        position.Next(Speed, Time.fixedDeltaTime);
+        _ = position.Next(Speed, Time.fixedDeltaTime);
     }
 }

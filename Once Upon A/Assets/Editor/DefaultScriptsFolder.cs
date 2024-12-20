@@ -1,23 +1,20 @@
 // From https://discussions.unity.com/t/change-default-script-folder/92375/4
 
-using UnityEngine;
-using UnityEditor;
 using System.Collections.Generic;
 using System.IO;
+using UnityEditor;
+using UnityEngine;
 
 //purpose of this postprocessor is to ensure that listed file extensions
 // are not in certain filepaths, when they are they are moved to a 
 //specified default path
-public class FileImportHandler : AssetPostprocessor 
+public class FileImportHandler : AssetPostprocessor
 {
-	//only evaluate files imported into these paths
-	static List<string> pathsToMoveFrom = new List<string>()
-	{
-		"Assets"
-	};
+    //only evaluate files imported into these paths
+    private static readonly List<string> pathsToMoveFrom = new() { "Assets" };
 
-	static Dictionary<string,string> defaultFileLocationByExtension = new Dictionary<string, string>()
-	{
+    private static readonly Dictionary<string, string> defaultFileLocationByExtension = new()
+    {
 		/* {".mp4",   "Assets/StreamingAssets/"},//for IOS, movies need to be in StreamingAssets */
 
 		/* {".anim",   "Assets/Art/Animations/"}, */
@@ -42,26 +39,24 @@ public class FileImportHandler : AssetPostprocessor
 		/* {".cginc",  "Assets/Dev/Shaders/"} */
 	};
 
-	static void OnPostprocessAllAssets (string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths) 
-	{
-		foreach (string oldFilePath in importedAssets)
-		{
-			string directory = Path.GetDirectoryName(oldFilePath);
-			if(!pathsToMoveFrom.Contains(directory))
-				continue;
-			
-			string extension = Path.GetExtension(oldFilePath).ToLower();
-			if(!defaultFileLocationByExtension.ContainsKey(extension))
-				continue;
-			
-			string filename = Path.GetFileName(oldFilePath);
-			string newPath = defaultFileLocationByExtension[extension];
-			
-			AssetDatabase.MoveAsset(oldFilePath, newPath + filename);
-			
-			
-			Debug.Log(string.Format("Moving asset ({0}) to path: {1}", filename, newPath));
-		}
-	}
+    public static void OnPostprocessAllAssets(string[] importedAssets, string[] _1, string[] _2, string[] _3)
+    {
+        foreach (string oldFilePath in importedAssets)
+        {
+            string directory = Path.GetDirectoryName(oldFilePath);
+            if (!pathsToMoveFrom.Contains(directory)) { continue; }
+
+            string extension = Path.GetExtension(oldFilePath).ToLower();
+            if (!defaultFileLocationByExtension.ContainsKey(extension)) { continue; }
+
+            string filename = Path.GetFileName(oldFilePath);
+            string newPath = defaultFileLocationByExtension[extension];
+
+            _ = AssetDatabase.MoveAsset(oldFilePath, newPath + filename);
+
+
+            Debug.Log(string.Format("Moving asset ({0}) to path: {1}", filename, newPath));
+        }
+    }
 }
 

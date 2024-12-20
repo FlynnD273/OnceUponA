@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class VisibilityTrigger : MonoBehaviour
@@ -25,33 +22,20 @@ public class VisibilityTrigger : MonoBehaviour
         {
             return;
         }
-        /* var text = GetComponent<DynamicText>(); */
-        /* if (text != null && !text.IsVisible) */
-        /* { */
-        /*   foreach (var go in Visible) */
-        /*   { */
-        /*     go.SetVisibility(false, this); */
-        /*   } */
-        /*   foreach (var go in Invisible) */
-        /*   { */
-        /*     go.SetVisibility(false, this); */
-        /*   } */
-        /*   return; */
-        /* } */
-        foreach (var go in Visible)
+        foreach (DynamicText go in Visible)
         {
             go.SetVisibility(!Trigger.State, this);
         }
-        foreach (var go in Invisible)
+        foreach (DynamicText go in Invisible)
         {
             go.SetVisibility(Trigger.State, this);
         }
 
         if (Trigger.State)
         {
-            foreach (var go in Trigger.InvolvedSlots)
+            foreach (TriggerLogic go in Trigger.InvolvedSlots)
             {
-                var slot = go.GetComponent<WordSlotController>();
+                WordSlotController slot = go.GetComponent<WordSlotController>();
                 if (slot != null)
                 {
                     slot.IsSwappable = false;

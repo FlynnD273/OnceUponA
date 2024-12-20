@@ -1,8 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.SceneManagement;
-
 public class StartButton : ButtonController
 {
     public GameManager Manager;
@@ -12,7 +7,7 @@ public class StartButton : ButtonController
         GameManager.Manager.LoadLevel();
     }
 
-    void Update()
+    public void Update()
     {
         if (Manager.Input.Actions.Jump.WasPressedThisFrame())
         {
