@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using static Utils.Constants;
 
@@ -64,6 +65,7 @@ public class WordSlotController : TriggerLogic
 
     private Word savedWord;
     private bool savedIsSwappable;
+    private readonly Material textMaterial;
 
     public void Awake()
     {
@@ -86,14 +88,15 @@ public class WordSlotController : TriggerLogic
 
     public void UpdateUnderline()
     {
-        if (!text.IsVisible || !IsSwappable)
+        WordType type = CurrentWord?.Type ?? WordType.White;
+        if (!text.IsVisible || (type != WordType.Bouncy && type != WordType.Danger)) // || !IsSwappable)
         {
             line.enabled = false;
             return;
         }
 
         line.enabled = true;
-        line.startColor = WordToColor[CurrentWord?.Type ?? WordType.White];
+        line.startColor = WordToColor[type];
         line.endColor = line.startColor;
         lineLength.TargetValue = text.Width;
 
@@ -111,9 +114,38 @@ public class WordSlotController : TriggerLogic
         IsSwappable = IsSwappableAtStart;
     }
 
-    internal override void InheritedUpdate()
+    public new void Update()
     {
-        line.SetPosition(1, new Vector2(lineLength.Next(StandardAnim, Time.deltaTime), -25));
+        base.Update();
+        WordType type = CurrentWord?.Type ?? WordType.White;
+        float len = lineLength.Next(StandardAnim, Time.deltaTime);
+        if (type == WordType.Danger)
+        {
+            const float spacing = 10f;
+            line.positionCount = (int)(len / spacing) + 2;
+            Vector3[] positions = new Vector3[line.positionCount];
+            for (int i = 0; i < positions.Length; i++)
+            {
+                if (i < positions.Length - 1)
+                {
+                    positions[i] = new Vector2(i * spacing, -25 + ((i % 2) == 0 ? -3 : 3));
+                }
+                else
+                {
+                    float prevY = -25 + (((i - 1) % 2) == 0 ? -3 : 3);
+                    float y = -25 + ((i % 2) == 0 ? -3 : 3);
+                    float l = (len - ((i - 1) * spacing)) / spacing;
+                    positions[i] = new Vector2(len, Mathf.Lerp(prevY, y, l));
+                }
+            }
+            line.SetPositions(positions);
+        }
+        else if (type == WordType.Bouncy)
+        {
+            line.positionCount = 2;
+            line.SetPosition(0, new Vector2(0, -25));
+            line.SetPosition(1, new Vector2(len, -25));
+        }
     }
 
     private void Reset()

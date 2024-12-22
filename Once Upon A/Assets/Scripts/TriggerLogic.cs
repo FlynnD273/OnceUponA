@@ -32,11 +32,7 @@ public class TriggerLogic : MonoBehaviour
             Init();
             didInit = true;
         }
-
-        InheritedUpdate();
     }
-
-    internal virtual void InheritedUpdate() { }
 
     public virtual void Init()
     {
