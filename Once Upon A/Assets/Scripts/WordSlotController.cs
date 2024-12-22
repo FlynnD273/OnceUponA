@@ -61,8 +61,6 @@ public class WordSlotController : TriggerLogic
 
     private LineRenderer line;
 
-    private readonly ExpDamp lineLength = new();
-
     private Word savedWord;
     private bool savedIsSwappable;
     private readonly Material textMaterial;
@@ -98,7 +96,6 @@ public class WordSlotController : TriggerLogic
         line.enabled = true;
         line.startColor = WordToColor[type];
         line.endColor = line.startColor;
-        lineLength.TargetValue = text.Width;
 
         trigger.size = new Vector2(text.Width, trigger.size.y);
         trigger.offset = new Vector2(text.Width / 2, trigger.offset.y);
@@ -118,30 +115,37 @@ public class WordSlotController : TriggerLogic
     {
         base.Update();
         WordType type = CurrentWord?.Type ?? WordType.White;
-        float len = lineLength.Next(StandardAnim, Time.deltaTime);
+        float len = text.Width;
         if (type == WordType.Danger)
         {
             const float spacing = 10f;
-            line.positionCount = (int)(len / spacing) + 2;
+            line.positionCount = (int)(len / spacing) + 4;
             Vector3[] positions = new Vector3[line.positionCount];
-            for (int i = 0; i < positions.Length; i++)
+            const float height = 4;
+            int i;
+
+            for (i = 0; i < positions.Length - 3; i++)
             {
-                if (i < positions.Length - 1)
-                {
-                    positions[i] = new Vector2(i * spacing, -25 + ((i % 2) == 0 ? -3 : 3));
-                }
-                else
-                {
-                    float prevY = -25 + (((i - 1) % 2) == 0 ? -3 : 3);
-                    float y = -25 + ((i % 2) == 0 ? -3 : 3);
-                    float l = (len - ((i - 1) * spacing)) / spacing;
-                    positions[i] = new Vector2(len, Mathf.Lerp(prevY, y, l));
-                }
+                positions[i] = new Vector2(i * spacing, -27 + ((i % 2) == 0 ? height : -height));
             }
+
+            float prevY = -27 + (((i - 1) % 2) == 0 ? height : -height);
+            float y = -27 + ((i % 2) == 0 ? height : -height);
+            float l = (len - ((i - 1) * spacing)) / spacing;
+            positions[i] = new Vector2(len, Mathf.Lerp(prevY, y, l));
+
+            i++;
+            positions[i] = new Vector2(len, -27 + height);
+
+            i++;
+            positions[i] = new Vector2(0, -27 + height);
+
             line.SetPositions(positions);
+            line.loop = true;
         }
         else if (type == WordType.Bouncy)
         {
+            line.loop = false;
             line.positionCount = 2;
             line.SetPosition(0, new Vector2(0, -25));
             line.SetPosition(1, new Vector2(len, -25));
